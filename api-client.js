@@ -70,7 +70,8 @@ const ApiClient = {
             return json;
         } catch (err) {
             if (err.status) throw err;
-            throw { status: 0, error: 'Network error', offline: true };
+            console.error(`Fetch failed for ${url}:`, err);
+            throw { status: 0, error: `Network error (Failed to reach ${this.baseURL})`, offline: true, target: url };
         }
     },
 
