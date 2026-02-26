@@ -6,9 +6,9 @@ module.exports = {
     // GET /api/admin/users — List all users with roles
     async listUsers(req, res) {
         try {
-            const { role, search, page = 1, limit = 50 } = req.query;
+            const { role, search, page = 1, limit = 50, approved } = req.query;
             const offset = (page - 1) * limit;
-            let sql = `SELECT u.id, u.email, u.name, u.phone, r.name as role, u.is_active, u.xp, u.streak,
+            let sql = `SELECT u.id, u.email, u.name, u.phone, r.name as role, u.is_active, u.is_approved, u.xp, u.streak,
                         u.last_login, u.created_at
                         FROM users u JOIN roles r ON u.role_id = r.id WHERE 1=1`;
             const params = [];
@@ -22,6 +22,10 @@ module.exports = {
                 sql += ` AND (u.name ILIKE $${pIdx} OR u.email ILIKE $${pIdx})`;
                 params.push(`%${search}%`);
                 pIdx++;
+            }
+            if (approved !== undefined) {
+                sql += ` AND u.is_approved = $${pIdx++}`;
+                params.push(approved === 'true');
             }
 
             sql += ` ORDER BY u.created_at DESC LIMIT $${pIdx++} OFFSET $${pIdx}`;
@@ -132,6 +136,39 @@ module.exports = {
             });
         } catch (err) {
             res.status(500).json({ error: 'Failed to get stats' });
+        }
+    },
+
+    // PUT /api/admin/users/:id/approve
+    async approveUser(req, res) {
+        try {
+            const { id } = req.params;
+            const { approve } = req.body;
+
+            await query('UPDATE users SET is_approved = $1, is_active = $1, updated_at = NOW() WHERE id = $2', [approve !== false, id]);
+
+            const action = approve !== false ? 'approved' : 'rejected';
+            await logger.log(req.user.id, `${action.charAt(0).toUpperCase() + action.slice(1)} user ${id}`, 'admin', { targetId: id }, req);
+
+            res.json({ message: `User ${action} successfully` });
+        } catch (err) {
+            res.status(500).json({ error: 'Failed to update approval status' });
+        }
+    },
+
+    // PUT /api/admin/users/:id/promote
+    async promoteToAdmin(req, res) {
+        try {
+            const { id } = req.params;
+            const roleResult = await query("SELECT id FROM roles WHERE name = 'admin'");
+            const roleId = roleResult.rows[0].id;
+
+            await query('UPDATE users SET role_id = $1, updated_at = NOW() WHERE id = $2', [roleId, id]);
+            await logger.log(req.user.id, `Promoted user ${id} to admin`, 'admin', { targetId: id }, req);
+
+            res.json({ message: 'User promoted to admin' });
+        } catch (err) {
+            res.status(500).json({ error: 'Failed to promote user' });
         }
     }
 };

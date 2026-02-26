@@ -25,12 +25,15 @@ module.exports = {
             const roleResult = await query('SELECT id FROM roles WHERE name = $1', [roleName]);
             const roleId = roleResult.rows[0]?.id || 4;
 
+            // Admin/Trainer require approval
+            const isApproved = (roleName === 'member' || roleName === 'super_admin');
+
             // Create user (inactive until OTP verified)
             const result = await query(
-                `INSERT INTO users (email, password_hash, name, role_id, age, gender, height, weight, goal, level, workout_days, is_active, is_email_verified)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, false, false)
+                `INSERT INTO users (email, password_hash, name, role_id, age, gender, height, weight, goal, level, workout_days, is_active, is_email_verified, is_approved)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, false, false, $12)
                  RETURNING id, email, name`,
-                [email, passwordHash, name, roleId, age || null, gender || null, height || null, weight || null, goal || null, level || 'beginner', workout_days || 3]
+                [email, passwordHash, name, roleId, age || null, gender || null, height || null, weight || null, goal || null, level || 'beginner', workout_days || 3, isApproved]
             );
 
             const user = result.rows[0];
@@ -142,6 +145,11 @@ module.exports = {
             // Check if account is active
             if (!user.is_active) {
                 return res.status(403).json({ error: 'Account not verified. Please verify your email.', code: 'NOT_VERIFIED' });
+            }
+
+            // Check if account is approved (for Admin/Trainer)
+            if (!user.is_approved) {
+                return res.status(403).json({ error: 'Account pending admin approval.', code: 'PENDING_APPROVAL' });
             }
 
             // Update last login

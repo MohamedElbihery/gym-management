@@ -13,6 +13,8 @@ router.get('/stats', admin.getStats);
 // Super Admin only
 router.post('/users', requireRole('super_admin'), admin.createUser);
 router.put('/users/:id/role', requireRole('super_admin'), roleUpdateValidator, admin.updateRole);
+router.put('/users/:id/approve', admin.approveUser);
+router.put('/users/:id/promote', admin.promoteToAdmin);
 router.delete('/users/:id', requireRole('super_admin'), userIdValidator, admin.deleteUser);
 
 module.exports = router;

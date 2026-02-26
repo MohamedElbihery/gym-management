@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS users (
     -- Status
     is_active BOOLEAN DEFAULT false,
     is_email_verified BOOLEAN DEFAULT false,
+    is_approved BOOLEAN DEFAULT true, -- Default true for members
     last_login TIMESTAMP,
     last_workout TIMESTAMP,
     language VARCHAR(5) DEFAULT 'en',

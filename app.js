@@ -216,12 +216,28 @@ const Auth = {
         });
     },
     demoLogin(role) {
-        const pass = prompt(I18n.currentLang === 'ar' ? 'أدخل كلمة مرور المسؤول:' : 'Enter Admin Password:');
-        if (pass !== 'Albery#@#') {
+        document.getElementById('demoRoleInput').value = role;
+        document.getElementById('demoPassInput').value = '';
+        openModal('demoPassModal');
+        document.getElementById('demoPassInput').focus();
+    },
+    handleDemoSubmit(e) {
+        e.preventDefault();
+        const role = document.getElementById('demoRoleInput').value;
+        const pass = document.getElementById('demoPassInput').value;
+
+        const rolePasswords = {
+            'admin': 'Albery#@#',
+            'trainer': 'Trainer#Access',
+            'member': 'Member#Access'
+        };
+
+        if (pass !== rolePasswords[role]) {
             showToast(I18n.currentLang === 'ar' ? 'كلمة المرور غير صحيحة' : 'Incorrect password', 'error');
             return;
         }
 
+        closeModal('demoPassModal');
         DemoData.seed();
         const users = Store.getA('users');
         const user = users.find(u => u.role === role);
@@ -407,6 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
     Router.init();
     Notifs.init();
     Auth.init();
+
+    // Demo Pass Form
+    const demoPassForm = document.getElementById('demoPassForm');
+    if (demoPassForm) {
+        demoPassForm.addEventListener('submit', e => Auth.handleDemoSubmit(e));
+    }
 
     // OTP digit auto-advance
     document.querySelectorAll('.otp-digit').forEach((input, idx, inputs) => {

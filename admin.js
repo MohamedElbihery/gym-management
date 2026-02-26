@@ -16,6 +16,7 @@ const AdminModule = {
             case 'a-revenue': this.renderRevenue(); break;
             case 'a-attendance': this.renderAttendance(); break;
             case 'a-members': this.renderMembers(); break;
+            case 'a-requests': this.renderRequests(); break;
             case 'a-risk': this.renderRisk(); break;
             case 'a-plans': this.renderPlans(); break;
         }
@@ -191,15 +192,109 @@ const AdminModule = {
 
         container.innerHTML = `
             <div class="table-responsive">
-                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th></tr></thead>
+                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th><th>${I18n.t('admin.actions') || 'Actions'}</th></tr></thead>
                 <tbody>${members.map(m => {
             const tier = Gamification.getTier(m.xp || 0);
             const status = m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date() ? 'expired' : m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000) ? 'expiring' : 'active';
             const plan = m.subscription?.plan || m.plan || '—';
-            return `<tr><td><strong>${m.name}</strong></td><td>${m.email}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + plan.toLowerCase()) || plan}</td><td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td><td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td><td>🔥 ${m.streak || 0}</td><td>${formatDate(m.createdAt || m.created_at)}</td></tr>`;
+            return `<tr>
+                <td><strong>${m.name}</strong></td>
+                <td>${m.email}</td>
+                <td style="text-transform:capitalize;">${I18n.t('admin.' + plan.toLowerCase()) || plan}</td>
+                <td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td>
+                <td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td>
+                <td>🔥 ${m.streak || 0}</td>
+                <td>${formatDate(m.createdAt || m.created_at)}</td>
+                <td>
+                    ${m.role !== 'admin' ? `<button class="btn btn-ghost btn-xs" onclick="AdminModule.promoteMember('${m.id}')" title="${I18n.t('auth.makeAdmin')}">👑</button>` : ''}
+                </td>
+            </tr>`;
         }).join('')}</tbody></table>
             </div>
         `;
+    },
+
+    // ==================== REQUESTS ====================
+    renderRequests() {
+        const s = document.getElementById('section-a-requests');
+        s.innerHTML = `
+            <div class="section-header"><h1>${I18n.t('auth.requests')}</h1><p class="section-subtitle">Manage pending trainer and admin join requests</p></div>
+            <div class="card table-card" id="adminRequestsTable">
+                <p class="empty-state sm">Loading requests...</p>
+            </div>
+        `;
+
+        ApiClient.checkBackend().then(available => {
+            if (available) {
+                ApiClient.getAdminUsers({ approved: 'false' })
+                    .then(res => {
+                        this.renderRequestsList(res.users);
+                    })
+                    .catch(err => {
+                        showToast('Failed to load requests', 'error');
+                        document.getElementById('adminRequestsTable').innerHTML = '<p class="empty-state sm">Error loading requests</p>';
+                    });
+            } else {
+                document.getElementById('adminRequestsTable').innerHTML = '<p class="empty-state sm">Requests are only available in connected mode</p>';
+            }
+        });
+    },
+
+    renderRequestsList(users) {
+        const container = document.getElementById('adminRequestsTable');
+        if (!container) return;
+
+        if (users.length === 0) {
+            container.innerHTML = `<p class="empty-state sm">No pending requests</p>`;
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.role')}</th><th>${I18n.t('admin.joined')}</th><th>${I18n.t('admin.actions') || 'Actions'}</th></tr></thead>
+                <tbody>${users.map(u => `
+                    <tr>
+                        <td><strong>${u.name}</strong> ${u.is_active ? '✅' : '⏳'}</td>
+                        <td>${u.email}</td>
+                        <td style="text-transform:capitalize;">${I18n.t('auth.' + u.role) || u.role}</td>
+                        <td>${formatDate(u.created_at)}</td>
+                        <td>
+                            <div style="display:flex;gap:4px;">
+                                <button class="btn btn-primary btn-xs" onclick="AdminModule.handleApproval('${u.id}', true)">${I18n.t('auth.approve')}</button>
+                                <button class="btn btn-ghost btn-xs" style="color:var(--red);" onclick="AdminModule.handleApproval('${u.id}', false)">${I18n.t('auth.reject')}</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}</tbody></table>
+            </div>
+        `;
+    },
+
+    handleApproval(id, approve) {
+        if (!confirm(approve ? 'Approve this user?' : 'Reject and delete this user?')) return;
+
+        ApiClient.request(`/admin/users/${id}/approve`, {
+            method: 'PUT',
+            body: { approve }
+        }).then(res => {
+            showToast(res.message);
+            this.renderRequests();
+        }).catch(err => {
+            showToast(err.error || 'Failed to update approval', 'error');
+        });
+    },
+
+    promoteMember(id) {
+        if (!confirm(I18n.t('auth.makeAdmin') + '?')) return;
+
+        ApiClient.request(`/admin/users/${id}/promote`, {
+            method: 'PUT'
+        }).then(res => {
+            showToast(res.message);
+            this.renderMembers();
+        }).catch(err => {
+            showToast(err.error || 'Failed to promote', 'error');
+        });
     },
 
     // ==================== RISK DETECTION ====================
