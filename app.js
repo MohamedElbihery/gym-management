@@ -225,27 +225,21 @@ const Auth = {
         e.preventDefault();
         const role = document.getElementById('demoRoleInput').value;
         const pass = document.getElementById('demoPassInput').value;
+        const ADMIN_PASS = 'Albery#@#';
 
-        const rolePasswords = {
-            'admin': 'Albery#@#',
-            'trainer': 'Trainer#Access',
-            'member': 'Member#Access'
-        };
-
-        if (pass !== rolePasswords[role]) {
+        if (role !== 'admin' || pass !== ADMIN_PASS) {
             showToast(I18n.currentLang === 'ar' ? 'كلمة المرور غير صحيحة' : 'Incorrect password', 'error');
             return;
         }
 
         closeModal('demoPassModal');
         DemoData.seed();
-        const users = Store.getA('users');
-        const user = users.find(u => u.role === role);
+        const user = Store.getA('users').find(u => u.role === 'admin');
         if (!user) { showToast('Demo data error', 'error'); return; }
         this.currentUser = user;
         Store.set('session', user);
         this.enterApp();
-        showToast(I18n.t('general.demoLogin', [role]));
+        showToast(I18n.t('general.demoLogin', ['Admin']));
     },
     logout() {
         Store.remove('session');
