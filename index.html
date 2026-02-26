@@ -21,8 +21,73 @@
 
 <body>
 
-    <!-- ═══════════════ AUTH SCREEN ═══════════════ -->
-    <div id="authScreen" class="auth-screen">
+    <!-- LANDING PAGE -->
+    <div id="landingPage">
+        <nav class="landing-nav">
+            <div class="nav-logo">Gym<span>Forge</span> <span class="pro-badge">PRO</span></div>
+            <div class="nav-links">
+                <button class="btn btn-ghost" onclick="Router.showAuth('login')" data-i18n="landing.login">Sign
+                    In</button>
+                <button class="btn btn-primary" onclick="Router.showAuth('register')" data-i18n="landing.getStarted">Get
+                    Started</button>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 data-i18n="landing.heroTitle">The Future of Fitness Management</h1>
+                <p data-i18n="landing.heroSub">Empower your gym with AI-driven workouts, automated tracking, and premium
+                    member experiences.</p>
+                <div class="hero-btns">
+                    <button class="btn btn-primary btn-lg" onclick="Router.showAuth('register')"
+                        data-i18n="landing.getStarted">Get Started</button>
+                    <button class="btn btn-outline btn-lg" onclick="Router.showAuth('login')"
+                        data-i18n="landing.login">Sign In</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="glass-card float-anim">
+                    <div class="pulse-ring"></div>
+                    <img src="hero-bg.png" alt="GymForge Pro" class="hero-img">
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2 data-i18n="landing.featuresTitle">Why Choose GymForge Pro?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 data-i18n="landing.aiWorkouts">AI-Powered Workouts</h3>
+                    <p data-i18n="landing.aiWorkoutsDesc">Personalized training plans that adapt to your progress in
+                        real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="landing.tracking">Smart Tracking</h3>
+                    <p data-i18n="landing.trackingDesc">Monitor attendance, progress, and performance with ease.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <h3 data-i18n="landing.community">Active Community</h3>
+                    <p data-i18n="landing.communityDesc">Engage members with challenges, leaderboards, and rewards.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 data-i18n="landing.secure">Enterprise Security</h3>
+                    <p data-i18n="landing.secureDesc">Role-based access, OTP verification, and secure data handling.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="landing-footer">
+            <p data-i18n="landing.footer">© 2026 GymForge Pro. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- AUTH SCREEN -->
+    <div id="authScreen" style="display:none;">
+        class="auth-screen">
         <div class="auth-bg">
             <div class="auth-hero-img"></div>
             <div class="auth-hero-overlay"></div>

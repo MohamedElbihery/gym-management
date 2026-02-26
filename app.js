@@ -128,11 +128,15 @@ const Auth = {
         document.getElementById('regRole').addEventListener('change', e => {
             document.getElementById('memberFields').style.display = e.target.value === 'member' ? 'block' : 'none';
         });
-        // Demo buttons
-        document.querySelectorAll('.btn-demo').forEach(btn => {
-            btn.addEventListener('click', () => this.demoLogin(btn.dataset.role));
-        });
-        if (this.currentUser) this.enterApp();
+
+        if (this.currentUser) {
+            this.enterApp();
+        } else {
+            // Default to landing page
+            document.getElementById('landingPage').style.display = 'block';
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appShell').style.display = 'none';
+        }
     },
     login(e) {
         e.preventDefault();
@@ -219,12 +223,12 @@ const Auth = {
         Store.remove('session');
         this.currentUser = null;
         document.getElementById('appShell').style.display = 'none';
-        document.getElementById('authScreen').style.display = '';
-        document.getElementById('loginCard').style.display = 'block';
-        document.getElementById('registerCard').style.display = 'none';
+        document.getElementById('landingPage').style.display = 'block';
+        document.getElementById('authScreen').style.display = 'none';
     },
     enterApp() {
         document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('landingPage').style.display = 'none'; // Ensure landing page is hidden
         document.getElementById('appShell').style.display = 'flex';
         const u = this.currentUser;
         document.getElementById('sidebarAvatar').textContent = u.name.charAt(0).toUpperCase();
@@ -277,16 +281,29 @@ const Router = {
             document.getElementById('hamburger').classList.remove('active');
         });
     },
-    navigate(section) {
+    navigate(sectionId) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         const activeNav = document.querySelector('.role-nav[style*="flex"]');
         if (activeNav) activeNav.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        const target = document.getElementById(`section-${section}`);
+        const target = document.getElementById(`section-${sectionId}`);
         if (target) target.classList.add('active');
-        const navItem = document.querySelector(`[data-section="${section}"]`);
+        const navItem = document.querySelector(`[data-section="${sectionId}"]`);
         if (navItem) navItem.classList.add('active');
         // Trigger section render
-        this.onNavigate(section);
+        this.onNavigate(sectionId);
+    },
+    showAuth(type = 'login') {
+        document.getElementById('landingPage').style.display = 'none';
+        document.getElementById('appShell').style.display = 'none';
+        document.getElementById('authScreen').style.display = 'flex';
+
+        if (type === 'login') {
+            document.getElementById('loginCard').style.display = 'block';
+            document.getElementById('registerCard').style.display = 'none';
+        } else {
+            document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('registerCard').style.display = 'block';
+        }
     },
     onNavigate(section) {
         if (typeof UserModule !== 'undefined') UserModule.onNav(section);

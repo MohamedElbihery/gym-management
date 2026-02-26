@@ -56,20 +56,29 @@ async function migrate() {
         if (!superEmail || !superPass) {
             console.log('⚠️  SUPER_ADMIN_EMAIL/PASSWORD not set — skipping admin seed');
         } else {
-            const existing = await query('SELECT id FROM users WHERE email = $1', [superEmail]);
+            const existing = await query('SELECT id, password_hash FROM users WHERE email = $1', [superEmail]);
             if (existing.rows.length === 0) {
                 const passwordHash = await hashUtil.hash(superPass);
                 const roleResult = await query("SELECT id FROM roles WHERE name = 'super_admin'");
                 const roleId = roleResult.rows[0]?.id || 1;
 
                 await query(
-                    `INSERT INTO users (email, password_hash, name, role_id, is_active, is_email_verified)
-                     VALUES ($1, $2, $3, $4, true, true)`,
+                    `INSERT INTO users (email, password_hash, name, role_id, is_active, is_email_verified, is_approved)
+                     VALUES ($1, $2, $3, $4, true, true, true)`,
                     [superEmail, passwordHash, 'Super Admin', roleId]
                 );
                 console.log(`✅ Super Admin seeded: ${superEmail}`);
             } else {
-                console.log(`✅ Super Admin exists: ${superEmail}`);
+                // Check if password needs update
+                const user = existing.rows[0];
+                const match = await hashUtil.compare(superPass, user.password_hash);
+                if (!match) {
+                    const newHash = await hashUtil.hash(superPass);
+                    await query('UPDATE users SET password_hash = $1 WHERE id = $2', [newHash, user.id]);
+                    console.log(`🔄 Super Admin password updated: ${superEmail}`);
+                } else {
+                    console.log(`✅ Super Admin exists and up to date: ${superEmail}`);
+                }
             }
         }
 
