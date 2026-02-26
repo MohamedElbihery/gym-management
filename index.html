@@ -654,14 +654,19 @@
         window.GYMFORGE_API_URL = (() => {
             const hostname = window.location.hostname;
             const port = window.location.port;
-            if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                // If we are already on port 5001, we can use relative path
+            const protocol = window.location.protocol;
+
+            // Local dev: localhost, 127.0.0.1, or opening as a file
+            if (hostname === 'localhost' || hostname === '127.0.0.1' || protocol === 'file:') {
+                // If we are already on port 5001 (backend), use relative
                 if (port === '5001') return '/api';
-                // Otherwise (e.g. running on 8088), hit the backend directly
+                // Otherwise hit the local backend directly
                 return 'http://localhost:5001/api';
             }
-            // Production: point to Render backend
-            return 'https://gymforge-pro-api.onrender.com/api';
+
+            // Production: Always use relative '/api' and let Vercel handle the proxy
+            // This avoids CORS issues and makes the code cleaner
+            return '/api';
         })();
     </script>
     <script src="api-client.js"></script>
