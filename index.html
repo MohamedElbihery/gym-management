@@ -653,11 +653,14 @@
         // Example: 'https://gymforge-pro-api.onrender.com'
         window.GYMFORGE_API_URL = (() => {
             const hostname = window.location.hostname;
+            const port = window.location.port;
             if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                return '/api'; // Local dev — same-origin
+                // If we are already on port 5000, we can use relative path
+                if (port === '5000') return '/api';
+                // Otherwise (e.g. running on 8088), hit the backend directly
+                return 'http://localhost:5000/api';
             }
             // Production: point to Render backend
-            // CHANGE THIS to your actual Render URL after deployment
             return 'https://gymforge-pro-api.onrender.com/api';
         })();
     </script>
