@@ -36,25 +36,25 @@ const AdminModule = {
 
         const s = document.getElementById('section-a-dashboard');
         s.innerHTML = `
-            <div class="section-header"><h1>Admin Dashboard</h1><p class="section-subtitle">Platform analytics and key metrics</p></div>
+            <div class="section-header"><h1>${I18n.t('admin.dashTitle')}</h1><p class="section-subtitle">${I18n.t('admin.dashSubtitle')}</p></div>
             <div class="kpi-grid">
-                <div class="kpi-card"><div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="kpi-data"><span class="kpi-value">${members.length}</span><span class="kpi-label">Total Members</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="kpi-data"><span class="kpi-value">${active}</span><span class="kpi-label">Active</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="kpi-data"><span class="kpi-value">${expiring}</span><span class="kpi-label">Expiring Soon</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="kpi-data"><span class="kpi-value">$${totalRev.toLocaleString()}</span><span class="kpi-label">Total Revenue</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="kpi-data"><span class="kpi-value">$${thisMonthRev.toLocaleString()}</span><span class="kpi-label">MRR</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="kpi-data"><span class="kpi-value">${churnRate}%</span><span class="kpi-label">Churn Rate</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="kpi-data"><span class="kpi-value">${members.length}</span><span class="kpi-label">${I18n.t('trainer.totalMembers')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="kpi-data"><span class="kpi-value">${active}</span><span class="kpi-label">${I18n.t('admin.active')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="kpi-data"><span class="kpi-value">${expiring}</span><span class="kpi-label">${I18n.t('admin.expiringSoon')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="kpi-data"><span class="kpi-value">$${totalRev.toLocaleString()}</span><span class="kpi-label">${I18n.t('admin.totalRevenue')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="kpi-data"><span class="kpi-value">$${thisMonthRev.toLocaleString()}</span><span class="kpi-label">${I18n.t('admin.mrr')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="kpi-data"><span class="kpi-value">${churnRate}%</span><span class="kpi-label">${I18n.t('admin.churnRate')}</span></div></div>
             </div>
 
             <div class="charts-grid">
-                <div class="chart-card"><h3 class="chart-title">Revenue (Last 6 Months)</h3><canvas id="adminRevChart"></canvas></div>
-                <div class="chart-card"><h3 class="chart-title">Attendance (Last 7 Days)</h3><canvas id="adminAttChart"></canvas></div>
+                <div class="chart-card"><h3 class="chart-title">${I18n.t('admin.revenueLast6')}</h3><canvas id="adminRevChart"></canvas></div>
+                <div class="chart-card"><h3 class="chart-title">${I18n.t('admin.attendanceLast7')}</h3><canvas id="adminAttChart"></canvas></div>
             </div>
 
             <div class="charts-grid">
-                <div class="chart-card"><h3 class="chart-title">Plan Distribution</h3><canvas id="adminPlanDist"></canvas></div>
-                <div class="card"><h3 class="card-title">Subscription Predictions</h3>
-                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">Based on current patterns:</p>
+                <div class="chart-card"><h3 class="chart-title">${I18n.t('admin.planDist')}</h3><canvas id="adminPlanDist"></canvas></div>
+                <div class="card"><h3 class="card-title">${I18n.t('admin.subPredictions')}</h3>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;">${I18n.t('admin.basedOnPatterns')}</p>
                     ${this.getPredictions(members, payments)}
                 </div>
             </div>
@@ -72,9 +72,9 @@ const AdminModule = {
 
         return `
             <div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">${predictedRenewals}</span><span class="kpi-label">Est. Renewals</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">$${predictedRev}</span><span class="kpi-label">Predicted Revenue</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">${recentRate}%</span><span class="kpi-label">Retention Rate</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">${predictedRenewals}</span><span class="kpi-label">${I18n.t('admin.estRenewals')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">$${predictedRev}</span><span class="kpi-label">${I18n.t('admin.predictedRev')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value" style="font-size:1.2rem;">${recentRate}%</span><span class="kpi-label">${I18n.t('admin.retentionRate')}</span></div></div>
             </div>
         `;
     },
@@ -113,7 +113,7 @@ const AdminModule = {
         members.forEach(m => { if (m.subscription?.plan) planCounts[m.subscription.plan] = (planCounts[m.subscription.plan] || 0) + 1; });
         if (this.planDistChart) this.planDistChart.destroy();
         this.planDistChart = new Chart(document.getElementById('adminPlanDist'), {
-            type: 'doughnut', data: { labels: ['Basic', 'Pro', 'Elite'], datasets: [{ data: [planCounts.basic, planCounts.pro, planCounts.elite], backgroundColor: ['#3b82f6', '#f97316', '#a855f7'], borderWidth: 0 }] },
+            type: 'doughnut', data: { labels: [I18n.t('admin.basic'), I18n.t('admin.pro'), I18n.t('admin.elite')], datasets: [{ data: [planCounts.basic, planCounts.pro, planCounts.elite], backgroundColor: ['#3b82f6', '#f97316', '#a855f7'], borderWidth: 0 }] },
             options: { responsive: true, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#a1a1aa', font: { family: 'Outfit' }, padding: 16 } } } }
         });
     },
@@ -123,13 +123,13 @@ const AdminModule = {
         const payments = Store.getA('payments');
         const s = document.getElementById('section-a-revenue');
         s.innerHTML = `
-            <div class="section-header"><h1>Revenue Analytics</h1><p class="section-subtitle">Payment history and revenue tracking</p></div>
+            <div class="section-header"><h1>${I18n.t('admin.revAnalytics')}</h1><p class="section-subtitle">${I18n.t('admin.revSubtitle')}</p></div>
             <div class="card table-card">
                 <div class="table-responsive">
-                    <table class="data-table"><thead><tr><th>Member</th><th>Amount</th><th>Plan</th><th>Method</th><th>Date</th></tr></thead>
-                    <tbody>${payments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(p => `<tr><td><strong>${p.userName}</strong></td><td style="color:var(--green);font-weight:600;">$${p.amount}</td><td style="text-transform:capitalize;">${p.plan || '—'}</td><td style="text-transform:capitalize;">${p.method}</td><td>${formatDate(p.date)}</td></tr>`).join('')}</tbody></table>
+                    <table class="data-table"><thead><tr><th>${I18n.t('admin.member')}</th><th>${I18n.t('admin.amount')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.method')}</th><th>${I18n.t('admin.date')}</th></tr></thead>
+                    <tbody>${payments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(p => `<tr><td><strong>${p.userName}</strong></td><td style="color:var(--green);font-weight:600;">$${p.amount}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + p.plan) || p.plan || '—'}</td><td style="text-transform:capitalize;">${I18n.t('sub.' + p.method) || p.method}</td><td>${formatDate(p.date)}</td></tr>`).join('')}</tbody></table>
                 </div>
-                ${payments.length === 0 ? '<p class="empty-state sm">No payments</p>' : ''}
+                ${payments.length === 0 ? `<p class="empty-state sm">${I18n.t('admin.noPayments')}</p>` : ''}
             </div>
         `;
     },
@@ -139,15 +139,15 @@ const AdminModule = {
         const attendance = Store.getA('attendance').sort((a, b) => new Date(b.time) - new Date(a.time));
         const s = document.getElementById('section-a-attendance');
         s.innerHTML = `
-            <div class="section-header"><h1>Attendance Analytics</h1><p class="section-subtitle">Check-in logs and attendance patterns</p></div>
+            <div class="section-header"><h1>${I18n.t('admin.attAnalytics')}</h1><p class="section-subtitle">${I18n.t('admin.attSubtitle')}</p></div>
             <div class="kpi-grid" style="margin-bottom:24px;">
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.filter(a => a.date === todayStr()).length}</span><span class="kpi-label">Today</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.filter(a => new Date(a.date) >= new Date(Date.now() - 7 * 86400000)).length}</span><span class="kpi-label">This Week</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.length}</span><span class="kpi-label">All Time</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.filter(a => a.date === todayStr()).length}</span><span class="kpi-label">${I18n.t('admin.today')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.filter(a => new Date(a.date) >= new Date(Date.now() - 7 * 86400000)).length}</span><span class="kpi-label">${I18n.t('admin.thisWeek')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${attendance.length}</span><span class="kpi-label">${I18n.t('admin.allTime')}</span></div></div>
             </div>
             <div class="card table-card">
                 <div class="table-responsive">
-                    <table class="data-table"><thead><tr><th>Member</th><th>Date</th><th>Time</th><th>Method</th></tr></thead>
+                    <table class="data-table"><thead><tr><th>${I18n.t('admin.member')}</th><th>${I18n.t('admin.date')}</th><th>${I18n.t('admin.time')}</th><th>${I18n.t('admin.method')}</th></tr></thead>
                     <tbody>${attendance.slice(0, 50).map(a => `<tr><td><strong>${a.userName}</strong></td><td>${formatDate(a.date)}</td><td>${formatTime(a.time)}</td><td>${a.method}</td></tr>`).join('')}</tbody></table>
                 </div>
             </div>
@@ -159,14 +159,14 @@ const AdminModule = {
         const members = Auth.getMembers();
         const s = document.getElementById('section-a-members');
         s.innerHTML = `
-            <div class="section-header"><h1>All Members</h1><p class="section-subtitle">Manage gym membership</p></div>
+            <div class="section-header"><h1>${I18n.t('admin.allMembers')}</h1><p class="section-subtitle">${I18n.t('admin.manageGym')}</p></div>
             <div class="card table-card">
                 <div class="table-responsive">
-                    <table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>XP</th><th>Streak</th><th>Joined</th></tr></thead>
+                    <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th></tr></thead>
                     <tbody>${members.map(m => {
             const tier = Gamification.getTier(m.xp || 0);
             const status = m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date() ? 'expired' : m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000) ? 'expiring' : 'active';
-            return `<tr><td><strong>${m.name}</strong></td><td>${m.email}</td><td style="text-transform:capitalize;">${m.subscription?.plan || '—'}</td><td><span class="badge badge-${status}">${status}</span></td><td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td><td>🔥 ${m.streak || 0}</td><td>${formatDate(m.createdAt)}</td></tr>`;
+            return `<tr><td><strong>${m.name}</strong></td><td>${m.email}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + (m.subscription?.plan || '')) || m.subscription?.plan || '—'}</td><td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td><td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td><td>🔥 ${m.streak || 0}</td><td>${formatDate(m.createdAt)}</td></tr>`;
         }).join('')}</tbody></table>
                 </div>
             </div>
@@ -183,11 +183,11 @@ const AdminModule = {
             const recentCheckins = attendance.filter(a => a.userId === m.id && new Date(a.date) >= new Date(Date.now() - 14 * 86400000)).length;
             const tags = [];
             let score = 0;
-            if (recentCheckins === 0) { tags.push({ text: 'Inactive 14d+', color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 3; }
-            else if (recentCheckins < 3) { tags.push({ text: 'Low activity', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' }); score += 1; }
-            if (m.streak === 0) { tags.push({ text: 'No streak', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' }); score += 1; }
-            if (m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000)) { tags.push({ text: 'Sub expiring', color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 2; }
-            if (m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date()) { tags.push({ text: 'Expired', color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 3; }
+            if (recentCheckins === 0) { tags.push({ text: I18n.t('admin.inactive14d'), color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 3; }
+            else if (recentCheckins < 3) { tags.push({ text: I18n.t('admin.lowActivity'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' }); score += 1; }
+            if (m.streak === 0) { tags.push({ text: I18n.t('admin.noStreak'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' }); score += 1; }
+            if (m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000)) { tags.push({ text: I18n.t('admin.subExpiring'), color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 2; }
+            if (m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date()) { tags.push({ text: I18n.t('admin.expired'), color: 'var(--red-bg)', textColor: 'var(--red)' }); score += 3; }
             if (tags.length > 0) risks.push({ ...m, tags, riskScore: score, reasons: tags.map(t => t.text).join(' · ') });
         });
 
@@ -196,13 +196,13 @@ const AdminModule = {
 
         const s = document.getElementById('section-a-risk');
         s.innerHTML = `
-            <div class="section-header"><h1>Risk Detection</h1><p class="section-subtitle">Members flagged for low engagement or expiring subscriptions</p></div>
+            <div class="section-header"><h1>${I18n.t('admin.riskDetection')}</h1><p class="section-subtitle">${I18n.t('admin.riskSubtitle')}</p></div>
             <div class="kpi-grid" style="margin-bottom:24px;">
-                <div class="kpi-card"><div class="kpi-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div class="kpi-data"><span class="kpi-value">${risks.filter(r => r.riskScore >= 3).length}</span><span class="kpi-label">High Risk</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="kpi-data"><span class="kpi-value">${risks.filter(r => r.riskScore < 3).length}</span><span class="kpi-label">Medium Risk</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="kpi-data"><span class="kpi-value">${members.length - risks.length}</span><span class="kpi-label">Low Risk</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div class="kpi-data"><span class="kpi-value">${risks.filter(r => r.riskScore >= 3).length}</span><span class="kpi-label">${I18n.t('admin.highRisk')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="kpi-data"><span class="kpi-value">${risks.filter(r => r.riskScore < 3).length}</span><span class="kpi-label">${I18n.t('admin.mediumRisk')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="kpi-data"><span class="kpi-value">${members.length - risks.length}</span><span class="kpi-label">${I18n.t('admin.lowRisk')}</span></div></div>
             </div>
-            ${risks.length === 0 ? '<p class="empty-state">All members are in good standing! 🎉</p>' : risks.map((r, i) => `
+            ${risks.length === 0 ? `<p class="empty-state">${I18n.t('admin.allGood')}</p>` : risks.map((r, i) => `
                 <div class="risk-card">
                     <div class="risk-avatar" style="background:${colors[i % colors.length]}">${r.name.charAt(0)}</div>
                     <div class="risk-info">
@@ -210,7 +210,7 @@ const AdminModule = {
                         <div class="risk-reason">${r.reasons}</div>
                         <div class="risk-tags">${r.tags.map(t => `<span class="risk-tag" style="background:${t.color};color:${t.textColor};">${t.text}</span>`).join('')}</div>
                     </div>
-                    <span class="badge ${r.riskScore >= 3 ? 'badge-expired' : 'badge-expiring'}">${r.riskScore >= 3 ? 'HIGH' : 'MEDIUM'}</span>
+                    <span class="badge ${r.riskScore >= 3 ? 'badge-expired' : 'badge-expiring'}">${r.riskScore >= 3 ? I18n.t('admin.highRisk').split(' ')[0] : I18n.t('admin.mediumRisk').split(' ')[0]}</span>
                 </div>
             `).join('')}
         `;
@@ -222,26 +222,26 @@ const AdminModule = {
         const s = document.getElementById('section-a-plans');
         s.innerHTML = `
             <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
-                <div><h1>Plans & Pricing</h1><p class="section-subtitle">Manage subscription tiers</p></div>
-                <button class="btn btn-primary btn-sm" id="addPlanBtn">+ Add Plan</button>
+                <div><h1>${I18n.t('admin.plansPricing')}</h1><p class="section-subtitle">${I18n.t('admin.manageTiers')}</p></div>
+                <button class="btn btn-primary btn-sm" id="addPlanBtn">+ ${I18n.t('admin.addPlan')}</button>
             </div>
             <div class="pricing-grid">
                 ${plans.map(p => `
                     <div class="pricing-card">
-                        <div class="pricing-name">${p.name}</div>
-                        <div class="pricing-price">$${p.price}<span>/mo</span></div>
-                        <p style="font-size:0.82rem;color:var(--text-muted);text-transform:capitalize;">${p.duration}</p>
+                        <div class="pricing-name">${I18n.t('admin.' + p.name.toLowerCase()) || p.name}</div>
+                        <div class="pricing-price">$${p.price}<span>/${I18n.t('admin.monthly')[0]}</span></div>
+                        <p style="font-size:0.82rem;color:var(--text-muted);text-transform:capitalize;">${I18n.t('admin.' + p.duration.toLowerCase()) || p.duration}</p>
                         <ul class="pricing-features">${(p.features || []).map(f => `<li>${f}</li>`).join('')}</ul>
                         <div style="display:flex;gap:8px;margin-top:12px;">
-                            <button class="btn btn-ghost btn-sm btn-full" onclick="AdminModule.editPlan('${p.id}')">Edit</button>
-                            <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="AdminModule.deletePlan('${p.id}')">Delete</button>
+                            <button class="btn btn-ghost btn-sm btn-full" onclick="AdminModule.editPlan('${p.id}')">${I18n.t('admin.edit')}</button>
+                            <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="AdminModule.deletePlan('${p.id}')">${I18n.t('admin.delete')}</button>
                         </div>
                     </div>
                 `).join('')}
             </div>
         `;
         document.getElementById('addPlanBtn').addEventListener('click', () => {
-            document.getElementById('adminPlanTitle').textContent = 'Add Plan';
+            document.getElementById('adminPlanTitle').textContent = I18n.t('admin.addPlan');
             document.getElementById('adminPlanForm').reset();
             document.getElementById('apId').value = '';
             openModal('adminPlanModal');
@@ -252,7 +252,7 @@ const AdminModule = {
         const plans = Store.getA('sub_plans');
         const p = plans.find(x => x.id === id);
         if (!p) return;
-        document.getElementById('adminPlanTitle').textContent = 'Edit Plan';
+        document.getElementById('adminPlanTitle').textContent = I18n.t('admin.edit');
         document.getElementById('apId').value = p.id;
         document.getElementById('apName').value = p.name;
         document.getElementById('apPrice').value = p.price;
@@ -274,11 +274,11 @@ const AdminModule = {
         if (id) {
             const idx = plans.findIndex(p => p.id === id);
             if (idx > -1) Object.assign(plans[idx], data);
-            showToast('Plan updated');
+            showToast(I18n.t('admin.planUpdated'));
         } else {
             data.id = Store.genId('PLAN');
             plans.push(data);
-            showToast('Plan created');
+            showToast(I18n.t('admin.planCreated'));
         }
         Store.set('sub_plans', plans);
         closeModal('adminPlanModal');
@@ -286,9 +286,9 @@ const AdminModule = {
     },
 
     deletePlan(id) {
-        if (!confirm('Delete this plan?')) return;
+        if (!confirm(I18n.t('admin.deleteConfirm'))) return;
         Store.set('sub_plans', Store.getA('sub_plans').filter(p => p.id !== id));
-        showToast('Plan deleted', 'info');
+        showToast(I18n.t('admin.delete'), 'info');
         this.renderPlans();
     }
 };

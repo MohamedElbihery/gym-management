@@ -47,96 +47,104 @@
 
             <!-- LOGIN FORM -->
             <div class="auth-card" id="loginCard">
-                <h2>Welcome Back</h2>
-                <p class="auth-sub">Sign in to your account</p>
+                <h2 data-i18n="auth.welcome">Welcome Back</h2>
+                <p class="auth-sub" data-i18n="auth.signin">Sign in to your account</p>
                 <form id="loginForm">
-                    <div class="form-group"><label for="loginEmail">Email</label><input type="email" id="loginEmail"
-                            class="form-control" required placeholder="you@email.com"></div>
-                    <div class="form-group"><label for="loginPass">Password</label><input type="password" id="loginPass"
-                            class="form-control" required placeholder="••••••••"></div>
-                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                    <div class="form-group"><label for="loginEmail" data-i18n="auth.email">Email</label><input
+                            type="email" id="loginEmail" class="form-control" required placeholder="you@email.com"
+                            data-i18n="auth.email"></div>
+                    <div class="form-group"><label for="loginPass" data-i18n="auth.password">Password</label><input
+                            type="password" id="loginPass" class="form-control" required placeholder="••••••••"
+                            data-i18n="auth.password"></div>
+                    <button type="submit" class="btn btn-primary btn-full" data-i18n="auth.signInBtn">Sign In</button>
                 </form>
-                <p class="auth-switch">Don't have an account? <a href="#" id="showRegister">Create one</a></p>
+                <p class="auth-switch"><span data-i18n="auth.noAccount">Don't have an account?</span> <a href="#"
+                        id="showRegister" data-i18n="auth.createOne">Create one</a></p>
                 <div class="demo-logins">
-                    <p class="demo-title">Quick Demo Access</p>
+                    <p class="demo-title" data-i18n="auth.quickDemo">Quick Demo Access</p>
                     <div class="demo-btns">
-                        <button class="btn btn-demo" data-role="member">👤 Member</button>
-                        <button class="btn btn-demo" data-role="trainer">🏋️ Trainer</button>
-                        <button class="btn btn-demo" data-role="admin">⚙️ Admin</button>
+                        <button class="btn btn-demo" data-role="member" data-i18n="auth.member">👤 Member</button>
+                        <button class="btn btn-demo" data-role="trainer" data-i18n="auth.trainer">🏋️ Trainer</button>
+                        <button class="btn btn-demo" data-role="admin" data-i18n="auth.admin">⚙️ Admin</button>
                     </div>
                 </div>
             </div>
 
             <!-- REGISTER FORM -->
             <div class="auth-card" id="registerCard" style="display:none;">
-                <h2>Create Account</h2>
-                <p class="auth-sub">Join the future of fitness</p>
+                <h2 data-i18n="auth.createAccount">Create Account</h2>
+                <p class="auth-sub" data-i18n="auth.joinFuture">Join the future of fitness</p>
                 <form id="registerForm">
                     <div class="form-row">
-                        <div class="form-group"><label for="regName">Full Name</label><input type="text" id="regName"
-                                class="form-control" required></div>
-                        <div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail"
-                                class="form-control" required></div>
+                        <div class="form-group"><label for="regName" data-i18n="auth.fullName">Full Name</label><input
+                                type="text" id="regName" class="form-control" required></div>
+                        <div class="form-group"><label for="regEmail" data-i18n="auth.email">Email</label><input
+                                type="email" id="regEmail" class="form-control" required></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group"><label for="regPass">Password</label><input type="password" id="regPass"
-                                class="form-control" required minlength="4"></div>
-                        <div class="form-group"><label for="regRole">I am a</label><select id="regRole"
-                                class="form-control">
-                                <option value="member">Member</option>
-                                <option value="trainer">Trainer</option>
-                                <option value="admin">Admin</option>
+                        <div class="form-group"><label for="regPass" data-i18n="auth.password">Password</label><input
+                                type="password" id="regPass" class="form-control" required minlength="4"></div>
+                        <div class="form-group"><label for="regRole" data-i18n="auth.role">I am a</label><select
+                                id="regRole" class="form-control">
+                                <option value="member" data-i18n="auth.member">Member</option>
+                                <option value="trainer" data-i18n="auth.trainer">Trainer</option>
+                                <option value="admin" data-i18n="auth.admin">Admin</option>
                             </select></div>
                     </div>
                     <div id="memberFields">
                         <div class="form-row">
-                            <div class="form-group"><label for="regAge">Age</label><input type="number" id="regAge"
-                                    class="form-control" min="13" max="100"></div>
-                            <div class="form-group"><label for="regGender">Gender</label><select id="regGender"
-                                    class="form-control">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                            <div class="form-group"><label for="regAge" data-i18n="auth.age">Age</label><input
+                                    type="number" id="regAge" class="form-control" min="13" max="100"></div>
+                            <div class="form-group"><label for="regGender" data-i18n="auth.gender">Gender</label><select
+                                    id="regGender" class="form-control">
+                                    <option value="male" data-i18n="auth.male">Male</option>
+                                    <option value="female" data-i18n="auth.female">Female</option>
                                 </select></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label for="regHeight">Height (cm)</label><input type="number"
-                                    id="regHeight" class="form-control" min="100" max="250"></div>
-                            <div class="form-group"><label for="regWeight">Weight (kg)</label><input type="number"
-                                    id="regWeight" class="form-control" min="30" max="300" step="0.1"></div>
+                            <div class="form-group"><label for="regHeight" data-i18n="auth.height">Height
+                                    (cm)</label><input type="number" id="regHeight" class="form-control" min="100"
+                                    max="250"></div>
+                            <div class="form-group"><label for="regWeight" data-i18n="auth.weight">Weight
+                                    (kg)</label><input type="number" id="regWeight" class="form-control" min="30"
+                                    max="300" step="0.1"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label for="regGoal">Fitness Goal</label><select id="regGoal"
-                                    class="form-control">
-                                    <option value="lose_weight">Lose Weight</option>
-                                    <option value="build_muscle">Build Muscle</option>
-                                    <option value="endurance">Build Endurance</option>
-                                    <option value="general">General Fitness</option>
+                            <div class="form-group"><label for="regGoal" data-i18n="auth.goal">Fitness
+                                    Goal</label><select id="regGoal" class="form-control">
+                                    <option value="lose_weight" data-i18n="auth.goalLose">Lose Weight</option>
+                                    <option value="build_muscle" data-i18n="auth.goalBuild">Build Muscle</option>
+                                    <option value="endurance" data-i18n="auth.goalEndurance">Build Endurance</option>
+                                    <option value="general" data-i18n="auth.goalGeneral">General Fitness</option>
                                 </select></div>
-                            <div class="form-group"><label for="regLevel">Experience</label><select id="regLevel"
-                                    class="form-control">
-                                    <option value="beginner">Beginner</option>
-                                    <option value="intermediate">Intermediate</option>
-                                    <option value="advanced">Advanced</option>
+                            <div class="form-group"><label for="regLevel"
+                                    data-i18n="auth.level">Experience</label><select id="regLevel" class="form-control">
+                                    <option value="beginner" data-i18n="auth.beginner">Beginner</option>
+                                    <option value="intermediate" data-i18n="auth.intermediate">Intermediate</option>
+                                    <option value="advanced" data-i18n="auth.advanced">Advanced</option>
                                 </select></div>
                         </div>
-                        <div class="form-group"><label for="regDays">Workout Days/Week</label><select id="regDays"
-                                class="form-control">
+                        <div class="form-group"><label for="regDays" data-i18n="auth.workoutDays">Workout
+                                Days/Week</label><select id="regDays" class="form-control">
                                 <option value="3">3 Days</option>
                                 <option value="4">4 Days</option>
                                 <option value="5">5 Days</option>
                                 <option value="6">6 Days</option>
                             </select></div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                    <button type="submit" class="btn btn-primary btn-full" data-i18n="auth.createAccount">Create
+                        Account</button>
                 </form>
-                <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+                <p class="auth-switch"><span data-i18n="auth.haveAccount">Already have an account?</span> <a href="#"
+                        id="showLogin" data-i18n="auth.signIn">Sign in</a></p>
             </div>
 
             <!-- OTP VERIFICATION -->
             <div class="auth-card" id="otpCard" style="display:none;">
                 <div class="otp-icon">📧</div>
-                <h2>Verify Your Email</h2>
-                <p class="auth-sub" id="otpEmailDisplay">Enter the 6-digit code sent to your email</p>
+                <h2 data-i18n="general.otpVerifyTitle">Verify Your Email</h2>
+                <p class="auth-sub" id="otpEmailDisplay" data-i18n="general.otpVerifyCodeSent">Enter the 6-digit code
+                    sent to your email</p>
                 <form id="otpForm">
                     <div class="form-group">
                         <div class="otp-input-row">
@@ -148,10 +156,13 @@
                             <input type="text" maxlength="1" class="otp-digit" data-idx="5" autocomplete="off">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">Verify Code</button>
+                    <button type="submit" class="btn btn-primary btn-full" data-i18n="general.otpVerifyTitle">Verify
+                        Code</button>
                 </form>
-                <p class="otp-timer" id="otpTimer">Code expires in <span id="otpCountdown">5:00</span></p>
-                <p class="auth-switch">Didn't receive code? <a href="#" id="resendOTP">Resend</a></p>
+                <p class="otp-timer" id="otpTimer"><span data-i18n="general.otpExpiresIn">Code expires in</span> <span
+                        id="otpCountdown">5:00</span></p>
+                <p class="auth-switch"><span data-i18n="general.otpNotReceived">Didn't receive code?</span> <a href="#"
+                        id="resendOTP" data-i18n="general.otpResend">Resend</a></p>
             </div>
         </div>
     </div>
@@ -351,10 +362,11 @@
         <!-- Notification Panel -->
         <div class="notif-panel" id="notifPanel">
             <div class="notif-panel-header">
-                <h3>Notifications</h3><button class="btn btn-ghost btn-sm" id="clearNotifsBtn">Clear All</button>
+                <h3 data-i18n="general.notifications">Notifications</h3><button class="btn btn-ghost btn-sm"
+                    id="clearNotifsBtn" data-i18n="general.clearAll">Clear All</button>
             </div>
             <div class="notif-list" id="notifList">
-                <p class="empty-state sm">No notifications</p>
+                <p class="empty-state sm" data-i18n="general.noNotifications">No notifications</p>
             </div>
         </div>
 
@@ -407,25 +419,29 @@
     <div class="modal-overlay" id="mealModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Log Meal</h2><button class="modal-close" data-close="mealModal">&times;</button>
+                <h2 data-i18n="nutrition.logMeal">Log Meal</h2><button class="modal-close"
+                    data-close="mealModal">&times;</button>
             </div>
             <form id="mealForm">
-                <div class="form-group"><label for="mealName">Meal / Food</label><input type="text" id="mealName"
-                        class="form-control" required placeholder="e.g. Grilled Chicken"></div>
+                <div class="form-group"><label for="mealName" data-i18n="nutrition.mealName">Meal / Food</label><input
+                        type="text" id="mealName" class="form-control" required placeholder="e.g. Grilled Chicken"
+                        data-i18n="nutrition.mealPlaceholder"></div>
                 <div class="form-row">
-                    <div class="form-group"><label for="mealCals">Calories</label><input type="number" id="mealCals"
-                            class="form-control" required min="0"></div>
-                    <div class="form-group"><label for="mealProtein">Protein (g)</label><input type="number"
-                            id="mealProtein" class="form-control" min="0" step="0.1"></div>
+                    <div class="form-group"><label for="mealCals" data-i18n="nutrition.calories">Calories</label><input
+                            type="number" id="mealCals" class="form-control" required min="0"></div>
+                    <div class="form-group"><label for="mealProtein" data-i18n="nutrition.protein">Protein
+                            (g)</label><input type="number" id="mealProtein" class="form-control" min="0" step="0.1">
+                    </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label for="mealCarbs">Carbs (g)</label><input type="number" id="mealCarbs"
-                            class="form-control" min="0" step="0.1"></div>
-                    <div class="form-group"><label for="mealFats">Fats (g)</label><input type="number" id="mealFats"
-                            class="form-control" min="0" step="0.1"></div>
+                    <div class="form-group"><label for="mealCarbs" data-i18n="nutrition.carbs">Carbs (g)</label><input
+                            type="number" id="mealCarbs" class="form-control" min="0" step="0.1"></div>
+                    <div class="form-group"><label for="mealFats" data-i18n="nutrition.fats">Fats (g)</label><input
+                            type="number" id="mealFats" class="form-control" min="0" step="0.1"></div>
                 </div>
-                <div class="modal-actions"><button type="button" class="btn btn-ghost"
-                        data-close="mealModal">Cancel</button><button type="submit" class="btn btn-primary">Log
+                <div class="modal-actions"><button type="button" class="btn btn-ghost" data-close="mealModal"
+                        data-i18n="general.cancel">Cancel</button><button type="submit" class="btn btn-primary"
+                        data-i18n="nutrition.saveMeal">Log
                         Meal</button></div>
             </form>
         </div>
@@ -435,20 +451,22 @@
     <div class="modal-overlay" id="progressLogModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Log Progress</h2><button class="modal-close" data-close="progressLogModal">&times;</button>
+                <h2 data-i18n="progress.logTitle">Log Progress</h2><button class="modal-close"
+                    data-close="progressLogModal">&times;</button>
             </div>
             <form id="progressLogForm">
                 <div class="form-row">
-                    <div class="form-group"><label for="pWeight">Weight (kg)</label><input type="number" id="pWeight"
-                            class="form-control" required step="0.1" min="30"></div>
-                    <div class="form-group"><label for="pBodyFat">Body Fat %</label><input type="number" id="pBodyFat"
-                            class="form-control" step="0.1" min="3" max="60"></div>
+                    <div class="form-group"><label for="pWeight" data-i18n="auth.weight">Weight (kg)</label><input
+                            type="number" id="pWeight" class="form-control" required step="0.1" min="30"></div>
+                    <div class="form-group"><label for="pBodyFat" data-i18n="progress.bodyFat">Body Fat %</label><input
+                            type="number" id="pBodyFat" class="form-control" step="0.1" min="3" max="60"></div>
                 </div>
-                <div class="form-group"><label for="pNote">Notes</label><input type="text" id="pNote"
-                        class="form-control" placeholder="How are you feeling?"></div>
-                <div class="modal-actions"><button type="button" class="btn btn-ghost"
-                        data-close="progressLogModal">Cancel</button><button type="submit"
-                        class="btn btn-primary">Save</button></div>
+                <div class="form-group"><label for="pNote" data-i18n="progress.notes">Notes</label><input type="text"
+                        id="pNote" class="form-control" placeholder="How are you feeling?"
+                        data-i18n="progress.notesPlaceholder"></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost" data-close="progressLogModal"
+                        data-i18n="general.cancel">Cancel</button><button type="submit" class="btn btn-primary"
+                        data-i18n="general.save">Save</button></div>
             </form>
         </div>
     </div>
@@ -457,17 +475,19 @@
     <div class="modal-overlay" id="feedbackModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Send Feedback</h2><button class="modal-close" data-close="feedbackModal">&times;</button>
+                <h2 data-i18n="feedback.title">Send Feedback</h2><button class="modal-close"
+                    data-close="feedbackModal">&times;</button>
             </div>
             <form id="feedbackForm">
                 <input type="hidden" id="feedbackMemberId">
-                <div class="form-group"><label for="feedbackTo">To</label><input type="text" id="feedbackTo"
-                        class="form-control" readonly></div>
-                <div class="form-group"><label for="feedbackMsg">Message</label><textarea id="feedbackMsg"
-                        class="form-control" rows="4" required placeholder="Great progress this week!"></textarea></div>
-                <div class="modal-actions"><button type="button" class="btn btn-ghost"
-                        data-close="feedbackModal">Cancel</button><button type="submit"
-                        class="btn btn-primary">Send</button></div>
+                <div class="form-group"><label for="feedbackTo" data-i18n="feedback.to">To</label><input type="text"
+                        id="feedbackTo" class="form-control" readonly></div>
+                <div class="form-group"><label for="feedbackMsg" data-i18n="feedback.message">Message</label><textarea
+                        id="feedbackMsg" class="form-control" rows="4" required placeholder="Great progress this week!"
+                        data-i18n="feedback.placeholder"></textarea></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost" data-close="feedbackModal"
+                        data-i18n="general.cancel">Cancel</button><button type="submit" class="btn btn-primary"
+                        data-i18n="feedback.send">Send</button></div>
             </form>
         </div>
     </div>
@@ -476,27 +496,30 @@
     <div class="modal-overlay" id="adminPlanModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="adminPlanTitle">Add Plan</h2><button class="modal-close"
+                <h2 id="adminPlanTitle" data-i18n="admin.addPlan">Add Plan</h2><button class="modal-close"
                     data-close="adminPlanModal">&times;</button>
             </div>
             <form id="adminPlanForm">
                 <input type="hidden" id="apId">
-                <div class="form-group"><label for="apName">Plan Name</label><input type="text" id="apName"
-                        class="form-control" required></div>
+                <div class="form-group"><label for="apName" data-i18n="admin.planName">Plan Name</label><input
+                        type="text" id="apName" class="form-control" required></div>
                 <div class="form-row">
-                    <div class="form-group"><label for="apPrice">Price ($/month)</label><input type="number"
-                            id="apPrice" class="form-control" required min="0" step="0.01"></div>
-                    <div class="form-group"><label for="apDuration">Duration</label><select id="apDuration"
-                            class="form-control">
-                            <option value="monthly">Monthly</option>
-                            <option value="quarterly">Quarterly</option>
-                            <option value="yearly">Yearly</option>
+                    <div class="form-group"><label for="apPrice" data-i18n="admin.planPrice">Price
+                            ($/month)</label><input type="number" id="apPrice" class="form-control" required min="0"
+                            step="0.01"></div>
+                    <div class="form-group"><label for="apDuration"
+                            data-i18n="admin.planDuration">Duration</label><select id="apDuration" class="form-control">
+                            <option value="monthly" data-i18n="admin.monthly">Monthly</option>
+                            <option value="quarterly" data-i18n="admin.quarterly">Quarterly</option>
+                            <option value="yearly" data-i18n="admin.yearly">Yearly</option>
                         </select></div>
                 </div>
-                <div class="form-group"><label for="apFeatures">Features (comma separated)</label><input type="text"
-                        id="apFeatures" class="form-control" placeholder="AI Plans, Nutrition, Priority Support"></div>
-                <div class="modal-actions"><button type="button" class="btn btn-ghost"
-                        data-close="adminPlanModal">Cancel</button><button type="submit" class="btn btn-primary">Save
+                <div class="form-group"><label for="apFeatures" data-i18n="admin.planFeatures">Features (comma
+                        separated)</label><input type="text" id="apFeatures" class="form-control"
+                        placeholder="AI Plans, Nutrition, Priority Support" data-i18n="admin.featuresPlaceholder"></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost" data-close="adminPlanModal"
+                        data-i18n="general.cancel">Cancel</button><button type="submit" class="btn btn-primary"
+                        data-i18n="general.save">Save
                         Plan</button></div>
             </form>
         </div>
@@ -506,30 +529,35 @@
     <div class="modal-overlay" id="challengeModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Create Challenge</h2><button class="modal-close" data-close="challengeModal">&times;</button>
+                <h2 data-i18n="challenges.new">Create Challenge</h2><button class="modal-close"
+                    data-close="challengeModal">&times;</button>
             </div>
             <form id="challengeForm" onsubmit="ChallengeSystem.createChallenge(event)">
-                <div class="form-group"><label for="chName">Challenge Name</label><input type="text" id="chName"
-                        class="form-control" required placeholder="e.g. Spring Steps Challenge"></div>
+                <div class="form-group"><label for="chName" data-i18n="challenges.challengeName">Challenge
+                        Name</label><input type="text" id="chName" class="form-control" required
+                        placeholder="e.g. Spring Steps Challenge" data-i18n="challenges.namePlaceholder"></div>
                 <div class="form-row">
-                    <div class="form-group"><label for="chType">Type</label><select id="chType" class="form-control">
-                            <option value="steps">Steps</option>
-                            <option value="workouts">Workouts</option>
-                            <option value="calories">Calories</option>
-                            <option value="streak">Streak</option>
-                            <option value="xp">XP</option>
+                    <div class="form-group"><label for="chType" data-i18n="challenges.type">Type</label><select
+                            id="chType" class="form-control">
+                            <option value="steps" data-i18n="challenges.steps">Steps</option>
+                            <option value="workouts" data-i18n="challenges.workouts">Workouts</option>
+                            <option value="calories" data-i18n="challenges.calories">Calories</option>
+                            <option value="streak" data-i18n="challenges.streak">Streak</option>
+                            <option value="xp" data-i18n="challenges.xp">XP</option>
                         </select></div>
-                    <div class="form-group"><label for="chGoal">Goal</label><input type="number" id="chGoal"
-                            class="form-control" required min="1" value="10000"></div>
+                    <div class="form-group"><label for="chGoal" data-i18n="challenges.goal">Goal</label><input
+                            type="number" id="chGoal" class="form-control" required min="1" value="10000"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label for="chXP">XP Reward</label><input type="number" id="chXP"
-                            class="form-control" min="50" value="500"></div>
-                    <div class="form-group"><label for="chDays">Duration (days)</label><input type="number" id="chDays"
-                            class="form-control" min="1" value="30"></div>
+                    <div class="form-group"><label for="chXP" data-i18n="challenges.xpReward">XP Reward</label><input
+                            type="number" id="chXP" class="form-control" min="50" value="500"></div>
+                    <div class="form-group"><label for="chDays" data-i18n="challenges.durationDays">Duration
+                            (days)</label><input type="number" id="chDays" class="form-control" min="1" value="30">
+                    </div>
                 </div>
-                <div class="modal-actions"><button type="button" class="btn btn-ghost"
-                        data-close="challengeModal">Cancel</button><button type="submit" class="btn btn-primary">Create
+                <div class="modal-actions"><button type="button" class="btn btn-ghost" data-close="challengeModal"
+                        data-i18n="general.cancel">Cancel</button><button type="submit" class="btn btn-primary"
+                        data-i18n="challenges.new">Create
                         Challenge</button></div>
             </form>
         </div>
@@ -540,11 +568,11 @@
         <div class="level-up-card">
             <div class="level-up-particles"></div>
             <div class="level-up-icon">🏆</div>
-            <h2>LEVEL UP!</h2>
+            <h2 data-i18n="gamification.levelUp">LEVEL UP!</h2>
             <p class="level-up-tier" id="levelUpTier"></p>
             <p class="level-up-msg" id="levelUpMsg"></p>
-            <button class="btn btn-primary"
-                onclick="document.getElementById('levelUpOverlay').style.display='none'">Awesome!</button>
+            <button class="btn btn-primary" onclick="document.getElementById('levelUpOverlay').style.display='none'"
+                data-i18n="gamification.awesome">Awesome!</button>
         </div>
     </div>
 

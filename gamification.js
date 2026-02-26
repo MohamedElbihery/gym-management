@@ -64,14 +64,14 @@ const Gamification = {
         if (newLevel > oldLevel) {
             const tier = this.getTier(newXP);
             this.showLevelUp(tier);
-            Notifs.push(`Level Up! ${tier.emoji}`, `You've reached ${tier.name} tier! Keep pushing!`, 'success');
+            Notifs.push(I18n.t('gamify.levelUp') + ` ${tier.emoji}`, I18n.t('gamify.reachedTier', [I18n.t('tier.' + tier.css) || tier.name]), 'success');
         }
     },
 
     showLevelUp(tier) {
         const overlay = document.getElementById('levelUpOverlay');
-        document.getElementById('levelUpTier').textContent = `${tier.emoji} ${tier.name} Tier`;
-        document.getElementById('levelUpMsg').textContent = `Keep training to unlock the next level!`;
+        document.getElementById('levelUpTier').textContent = `${tier.emoji} ${I18n.t('tier.' + tier.css) || tier.name} ${I18n.t('challenges.badge')}`;
+        document.getElementById('levelUpMsg').textContent = I18n.t('gamify.keepTraining');
         overlay.style.display = 'flex';
     },
 
@@ -81,7 +81,7 @@ const Gamification = {
         if (!container) return;
         container.innerHTML = `
             <div class="xp-bar-info">
-                <span class="xp-level"><span class="level-badge level-${prog.current.css}">${prog.current.emoji} ${prog.current.name}</span></span>
+                <span class="xp-level"><span class="level-badge level-${prog.current.css}">${prog.current.emoji} ${I18n.t('tier.' + prog.current.css) || prog.current.name}</span></span>
                 <span class="xp-text">${xp} XP ${prog.next ? `/ ${prog.next.minXP} XP` : '(MAX)'}</span>
             </div>
             <div class="xp-bar"><div class="xp-bar-fill" style="width:${prog.pct}%"></div></div>
@@ -96,7 +96,7 @@ const Gamification = {
         const colors = ['#f97316', '#3b82f6', '#22c55e', '#a855f7', '#06b6d4', '#eab308', '#ec4899', '#14b8a6'];
 
         container.innerHTML = `
-            <div class="section-header"><h1>Leaderboard</h1><p class="section-subtitle">Top performers ranked by XP</p></div>
+            <div class="section-header"><h1>${I18n.t('gamify.leaderboardTitle')}</h1><p class="section-subtitle">${I18n.t('gamify.leaderboardSubtitle')}</p></div>
             <div class="leaderboard-list">
                 ${members.map((m, i) => {
             const tier = this.getTier(m.xp || 0);
@@ -107,12 +107,12 @@ const Gamification = {
                         <div class="lb-rank ${rankClass}">${i + 1}</div>
                         <div class="lb-avatar" style="background:${color}">${m.name.charAt(0)}</div>
                         <div class="lb-info">
-                            <div class="lb-name">${m.name} ${Auth.currentUser && m.id === Auth.currentUser.id ? '<span style="color:var(--accent);font-size:0.72rem;">(You)</span>' : ''}</div>
-                            <div class="lb-meta"><span class="level-badge level-${tier.css}" style="font-size:0.68rem;padding:2px 8px;">${tier.emoji} ${tier.name}</span></div>
+                            <div class="lb-name">${m.name} ${Auth.currentUser && m.id === Auth.currentUser.id ? `<span style="color:var(--accent);font-size:0.72rem;">${I18n.t('challenges.you')}</span>` : ''}</div>
+                            <div class="lb-meta"><span class="level-badge level-${tier.css}" style="font-size:0.68rem;padding:2px 8px;">${tier.emoji} ${I18n.t('tier.' + tier.css) || tier.name}</span></div>
                         </div>
                         <div style="text-align:right;">
                             <div class="lb-xp">${(m.xp || 0).toLocaleString()} XP</div>
-                            <div class="lb-streak">🔥 ${m.streak || 0} day streak</div>
+                            <div class="lb-streak">🔥 ${I18n.t('gamify.dayStreak', [m.streak || 0])}</div>
                         </div>
                     </div>`;
         }).join('')}

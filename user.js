@@ -35,14 +35,14 @@ const UserModule = {
         s.innerHTML = `
             <div class="welcome-banner">
                 <div>
-                    <h2>Hey, ${u.name.split(' ')[0]}! 💪</h2>
-                    <p>${todayPlan && !todayPlan.rest ? `Today's focus: <strong>${todayPlan.label}</strong>` : 'Rest day — recover and come back stronger!'}</p>
+                    <h2>${I18n.t('dash.heyName', [u.name.split(' ')[0]])}</h2>
+                    <p>${todayPlan && !todayPlan.rest ? I18n.t('dash.todayFocus', [todayPlan.label]) : I18n.t('dash.restDayMsg')}</p>
                 </div>
                 <div class="streak-box">
                     <span class="streak-fire">🔥</span>
                     <div>
                         <div class="streak-count">${u.streak || 0}</div>
-                        <div class="streak-label">Day Streak</div>
+                        <div class="streak-label">${I18n.t('dash.streakLabel')}</div>
                     </div>
                 </div>
             </div>
@@ -50,15 +50,15 @@ const UserModule = {
             <div class="xp-bar-container" id="dashXPBar"></div>
 
             <div class="kpi-grid">
-                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div><div class="kpi-data"><span class="kpi-value">${attendance.filter(a => { const d = new Date(a.date); const now = new Date(); return d >= new Date(now - 7 * 86400000); }).length}</span><span class="kpi-label">Workouts This Week</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="kpi-data"><span class="kpi-value">${u.weight ? u.weight + ' kg' : '—'}</span><span class="kpi-label">Current Weight</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></div><div class="kpi-data"><span class="kpi-value">${todayChecked ? '✓' : '—'}</span><span class="kpi-label">Checked In Today</span></div></div>
-                <div class="kpi-card"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="kpi-data"><span class="kpi-value">${attendance.length}</span><span class="kpi-label">Total Visits</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div><div class="kpi-data"><span class="kpi-value">${attendance.filter(a => { const d = new Date(a.date); const now = new Date(); return d >= new Date(now - 7 * 86400000); }).length}</span><span class="kpi-label">${I18n.t('dash.workoutsWeek')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="kpi-data"><span class="kpi-value">${u.weight ? u.weight + ' kg' : '—'}</span><span class="kpi-label">${I18n.t('dash.currentWeight')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></div><div class="kpi-data"><span class="kpi-value">${todayChecked ? '✓' : '—'}</span><span class="kpi-label">${I18n.t('dash.checkedInToday')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="kpi-data"><span class="kpi-value">${attendance.length}</span><span class="kpi-label">${I18n.t('dash.totalVisits')}</span></div></div>
             </div>
 
             ${todayPlan && !todayPlan.rest ? `
             <div class="today-preview">
-                <h3>Today's Workout</h3>
+                <h3>${I18n.t('dash.todayWorkout')}</h3>
                 <div class="today-muscle">${todayPlan.label} — ${todayPlan.muscles.join(', ')}</div>
                 <div class="exercise-list-items">
                     ${todayPlan.exercises.slice(0, 5).map(ex => `
@@ -68,13 +68,13 @@ const UserModule = {
                             <span class="exercise-detail">${ex.sets}×${ex.reps} · ${ex.rest}</span>
                         </div>
                     `).join('')}
-                    ${todayPlan.exercises.length > 5 ? `<p style="font-size:0.8rem;color:var(--text-muted);padding:4px 0;">+${todayPlan.exercises.length - 5} more exercises</p>` : ''}
+                    ${todayPlan.exercises.length > 5 ? `<p style="font-size:0.8rem;color:var(--text-muted);padding:4px 0;">${I18n.t('dash.moreExercises', [todayPlan.exercises.length - 5])}</p>` : ''}
                 </div>
-                <button class="btn btn-primary btn-sm" style="margin-top:14px;" onclick="Router.navigate('u-plan')">View Full Plan →</button>
+                <button class="btn btn-primary btn-sm" style="margin-top:14px;" onclick="Router.navigate('u-plan')">${I18n.t('dash.viewFullPlan')}</button>
             </div>` : ''}
 
             <div class="card">
-                <h3 class="card-title">Trainer Feedback</h3>
+                <h3 class="card-title">${I18n.t('dash.trainerFeedback')}</h3>
                 <div id="userFeedbackList"></div>
             </div>
         `;
@@ -87,10 +87,10 @@ const UserModule = {
         const feedbacks = Store.getA('feedbacks').filter(f => f.memberId === u.id).slice(0, 5);
         const el = document.getElementById('userFeedbackList');
         if (!el) return;
-        if (!feedbacks.length) { el.innerHTML = '<p class="empty-state sm">No feedback yet</p>'; return; }
+        if (!feedbacks.length) { el.innerHTML = `<p class="empty-state sm">${I18n.t('dash.noFeedback')}</p>`; return; }
         el.innerHTML = feedbacks.map(f => `
             <div class="notif-item" style="margin-bottom:8px;">
-                <div class="notif-title">From Coach</div>
+                <div class="notif-title">${I18n.t('dash.fromCoach')}</div>
                 <div>${f.message}</div>
                 <div class="notif-time">${timeAgo(f.createdAt)}</div>
             </div>
@@ -104,7 +104,7 @@ const UserModule = {
         const s = document.getElementById('section-u-plan');
 
         if (!planData) {
-            s.innerHTML = `<div class="section-header"><h1>My Workout Plan</h1></div><p class="empty-state">No plan generated yet. Contact admin or re-register.</p>`;
+            s.innerHTML = `<div class="section-header"><h1>${I18n.t('plan.title')}</h1></div><p class="empty-state">${I18n.t('plan.noPlan')}</p>`;
             return;
         }
 
@@ -113,20 +113,20 @@ const UserModule = {
 
         s.innerHTML = `
             <div class="section-header">
-                <h1>My Workout Plan</h1>
-                <p class="section-subtitle">AI-generated based on your goals and metrics${planData.adjustmentNote ? ` · <span style="color:var(--accent)">Adjusted: ${planData.adjustmentNote}</span>` : ''}</p>
+                <h1>${I18n.t('plan.title')}</h1>
+                <p class="section-subtitle">${I18n.t('plan.aiGenerated')}${planData.adjustmentNote ? ` · <span style="color:var(--accent)">${I18n.t('plan.adjusted', [planData.adjustmentNote])}</span>` : ''}</p>
             </div>
             <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
-                <button class="btn btn-primary btn-sm" id="regeneratePlanBtn">🤖 Regenerate Plan</button>
-                <button class="btn btn-ghost btn-sm" id="adjustPlanBtn">⚡ AI Weekly Adjust</button>
+                <button class="btn btn-primary btn-sm" id="regeneratePlanBtn">${I18n.t('plan.regenerate')}</button>
+                <button class="btn btn-ghost btn-sm" id="adjustPlanBtn">${I18n.t('plan.adjustWeekly')}</button>
             </div>
             <div class="week-grid">
                 ${plan.map(day => {
-            if (day.rest) return `<div class="day-card rest-day"><div><div class="rest-icon">😴</div><div class="day-label">${day.day}</div><p style="color:var(--text-muted);font-size:0.84rem;">Rest Day</p></div></div>`;
+            if (day.rest) return `<div class="day-card rest-day"><div><div class="rest-icon">😴</div><div class="day-label">${day.day}</div><p style="color:var(--text-muted);font-size:0.84rem;">${I18n.t('plan.restDay')}</p></div></div>`;
             const isToday = day.day === todayName;
             return `<div class="day-card ${isToday ? 'today' : ''}">
                         <div class="day-card-header">
-                            <div><div class="day-label">${day.day} ${isToday ? '<span style="color:var(--accent);font-size:0.76rem;">· TODAY</span>' : ''}</div><div class="day-muscle">${day.label}</div></div>
+                            <div><div class="day-label">${day.day} ${isToday ? `<span style="color:var(--accent);font-size:0.76rem;">${I18n.t('plan.todayLabel')}</span>` : ''}</div><div class="day-muscle">${day.label}</div></div>
                         </div>
                         <div class="exercise-list-items">
                             ${day.exercises.map((ex, ei) => `
@@ -137,7 +137,7 @@ const UserModule = {
                                 </div>
                             `).join('')}
                         </div>
-                        ${isToday ? `<button class="btn btn-primary btn-sm btn-full" style="margin-top:12px;" onclick="UserModule.completeWorkout('${day.day}')">✓ Complete Workout (+50 XP)</button>` : ''}
+                        ${isToday ? `<button class="btn btn-primary btn-sm btn-full" style="margin-top:12px;" onclick="UserModule.completeWorkout('${day.day}')">${I18n.t('plan.completeWorkout')}</button>` : ''}
                     </div>`;
         }).join('')}
             </div>
@@ -197,57 +197,57 @@ const UserModule = {
 
         const s = document.getElementById('section-u-nutrition');
         s.innerHTML = `
-            <div class="section-header"><h1>Nutrition</h1><p class="section-subtitle">AI-calculated targets based on your body and goals</p></div>
+            <div class="section-header"><h1>${I18n.t('nutrition.title')}</h1><p class="section-subtitle">${I18n.t('nutrition.subtitle')}</p></div>
 
             <div class="card">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                    <h3 class="card-title" style="margin:0;">Calorie Budget</h3>
+                    <h3 class="card-title" style="margin:0;">${I18n.t('nutrition.budget')}</h3>
                     <span style="font-size:0.85rem;font-weight:700;">${totalCals} / ${calTarget} kcal</span>
                 </div>
                 <div class="calorie-progress"><div class="calorie-fill ${calClass}" style="width:${Math.min(calPct, 100)}%"></div></div>
                 <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.76rem;color:var(--text-muted);">
                     <span>TDEE: ${target?.tdee || '—'} kcal</span>
                     <span>BMR: ${target?.bmr || '—'} kcal</span>
-                    <span>Goal: ${(target?.goal || '').replace('_', ' ')}</span>
+                    <span>Goal: ${I18n.t('auth.' + (target?.goal || ''))}</span>
                 </div>
             </div>
 
             <div class="macro-ring-grid">
                 <div class="macro-card">
                     <div class="macro-value" style="color:var(--orange-400);">${totalProtein.toFixed(0)}g</div>
-                    <div class="macro-label">Protein</div>
+                    <div class="macro-label">${I18n.t('nutrition.protein')}</div>
                     <div class="macro-sub">Target: ${target?.protein || 0}g</div>
                     <div class="calorie-progress" style="margin-top:8px;height:6px;"><div class="calorie-fill ok" style="width:${Math.min(100, Math.round((totalProtein / (target?.protein || 1)) * 100))}%"></div></div>
                 </div>
                 <div class="macro-card">
                     <div class="macro-value" style="color:var(--blue);">${totalCarbs.toFixed(0)}g</div>
-                    <div class="macro-label">Carbs</div>
+                    <div class="macro-label">${I18n.t('nutrition.carbs')}</div>
                     <div class="macro-sub">Target: ${target?.carbs || 0}g</div>
                     <div class="calorie-progress" style="margin-top:8px;height:6px;"><div class="calorie-fill ok" style="width:${Math.min(100, Math.round((totalCarbs / (target?.carbs || 1)) * 100))}%;background:linear-gradient(90deg,var(--blue),#60a5fa);"></div></div>
                 </div>
                 <div class="macro-card">
                     <div class="macro-value" style="color:var(--yellow);">${totalFats.toFixed(0)}g</div>
-                    <div class="macro-label">Fats</div>
+                    <div class="macro-label">${I18n.t('nutrition.fats')}</div>
                     <div class="macro-sub">Target: ${target?.fats || 0}g</div>
                     <div class="calorie-progress" style="margin-top:8px;height:6px;"><div class="calorie-fill ok" style="width:${Math.min(100, Math.round((totalFats / (target?.fats || 1)) * 100))}%;background:linear-gradient(90deg,var(--yellow),#fbbf24);"></div></div>
                 </div>
                 <div class="macro-card">
                     <div class="macro-value" style="color:var(--green);">${calTarget - totalCals > 0 ? calTarget - totalCals : 0}</div>
-                    <div class="macro-label">Remaining</div>
-                    <div class="macro-sub">Calories left</div>
+                    <div class="macro-label">${I18n.t('nutrition.remaining')}</div>
+                    <div class="macro-sub">${I18n.t('nutrition.left')}</div>
                 </div>
             </div>
 
             <div class="card">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                    <h3 class="card-title" style="margin:0;">Today's Meals</h3>
-                    <button class="btn btn-primary btn-sm" id="logMealBtn">+ Log Meal</button>
+                    <h3 class="card-title" style="margin:0;">${I18n.t('nutrition.todayMeals')}</h3>
+                    <button class="btn btn-primary btn-sm" id="logMealBtn">+ ${I18n.t('nutrition.logMeal')}</button>
                 </div>
                 <div class="meal-list" id="mealList">
-                    ${todayMeals.length === 0 ? '<p class="empty-state sm">No meals logged today</p>' : todayMeals.map(m => `
+                    ${todayMeals.length === 0 ? `<p class="empty-state sm">${I18n.t('nutrition.noMeals')}</p>` : todayMeals.map(m => `
                         <div class="meal-item">
                             <span class="meal-name">${m.name}</span>
-                            <span><span class="meal-cals">${m.calories} kcal</span> · P:${m.protein || 0}g · C:${m.carbs || 0}g · F:${m.fats || 0}g</span>
+                            <span><span class="meal-cals">${m.calories} kcal</span> · ${I18n.t('nutrition.protein')[0]}:${m.protein || 0}g · ${I18n.t('nutrition.carbs')[0]}:${m.carbs || 0}g · ${I18n.t('nutrition.fats')[0]}:${m.fats || 0}g</span>
                         </div>
                     `).join('')}
                 </div>
@@ -295,19 +295,19 @@ const UserModule = {
 
         const s = document.getElementById('section-u-progress');
         s.innerHTML = `
-            <div class="section-header"><h1>Progress Tracking</h1><p class="section-subtitle">Track your body metrics over time</p></div>
-            <div style="margin-bottom:20px;"><button class="btn btn-primary btn-sm" id="logProgressBtn">+ Log Progress</button></div>
+            <div class="section-header"><h1>${I18n.t('progress.title')}</h1><p class="section-subtitle">${I18n.t('progress.subtitle')}</p></div>
+            <div style="margin-bottom:20px;"><button class="btn btn-primary btn-sm" id="logProgressBtn">+ ${I18n.t('progress.logTitle')}</button></div>
 
             <div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${latest ? latest.weight + ' kg' : '—'}</span><span class="kpi-label">Current Weight</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${bmi}</span><span class="kpi-label">BMI</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${latest?.bodyFat ? latest.bodyFat + '%' : '—'}</span><span class="kpi-label">Body Fat</span></div></div>
-                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${entries.length}</span><span class="kpi-label">Entries</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${latest ? latest.weight + ' kg' : '—'}</span><span class="kpi-label">${I18n.t('dash.currentWeight')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${bmi}</span><span class="kpi-label">${I18n.t('progress.bmi')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${latest?.bodyFat ? latest.bodyFat + '%' : '—'}</span><span class="kpi-label">${I18n.t('progress.bodyFat')}</span></div></div>
+                <div class="kpi-card"><div class="kpi-data" style="text-align:center;width:100%;"><span class="kpi-value">${entries.length}</span><span class="kpi-label">${I18n.t('progress.entries')}</span></div></div>
             </div>
 
             <div class="charts-grid">
-                <div class="chart-card"><h3 class="chart-title">Weight Trend</h3><canvas id="userWeightChart"></canvas></div>
-                <div class="chart-card"><h3 class="chart-title">BMI Trend</h3><canvas id="userBmiChart"></canvas></div>
+                <div class="chart-card"><h3 class="chart-title">${I18n.t('progress.weightTrend')}</h3><canvas id="userWeightChart"></canvas></div>
+                <div class="chart-card"><h3 class="chart-title">${I18n.t('progress.bmiTrend')}</h3><canvas id="userBmiChart"></canvas></div>
             </div>
         `;
 
@@ -354,10 +354,10 @@ const UserModule = {
 
         const s = document.getElementById('section-u-checkin');
         s.innerHTML = `
-            <div class="section-header"><h1>QR Check-In</h1><p class="section-subtitle">Show this code at the front desk or scan to check in</p></div>
+            <div class="section-header"><h1>${I18n.t('checkin.title')}</h1><p class="section-subtitle">${I18n.t('checkin.subtitle')}</p></div>
             <div class="checkin-area">
                 <div class="qr-frame"><div id="userQR"></div><div class="qr-label">${u.name} · ${u.id}</div></div>
-                ${todayChecked ? '<div class="checkin-status success">✅ Already checked in today!</div>' : `<button class="btn btn-primary" id="selfCheckinBtn" style="min-width:200px;">Check In Now</button>`}
+                ${todayChecked ? `<div class="checkin-status success">${I18n.t('checkin.alreadyDone')}</div>` : `<button class="btn btn-primary" id="selfCheckinBtn" style="min-width:200px;">${I18n.t('checkin.btn')}</button>`}
                 <div id="checkinMsg"></div>
             </div>
         `;
@@ -405,34 +405,34 @@ const UserModule = {
 
         const s = document.getElementById('section-u-subscription');
         s.innerHTML = `
-            <div class="section-header"><h1>Subscription</h1><p class="section-subtitle">Manage your membership plan</p></div>
+            <div class="section-header"><h1>${I18n.t('sub.title')}</h1><p class="section-subtitle">${I18n.t('sub.subtitle')}</p></div>
             <div class="card" style="margin-bottom:24px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                     <div>
-                        <h3 style="font-size:1.1rem;font-weight:700;text-transform:capitalize;">${sub.plan} Plan</h3>
-                        <p style="font-size:0.85rem;color:var(--text-muted);">Status: <span class="badge badge-${sub.status === 'active' ? 'active' : sub.status === 'expiring' ? 'expiring' : 'expired'}">${sub.status}</span></p>
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;">Expires: ${formatDate(sub.expiresAt)}</p>
+                        <h3 style="font-size:1.1rem;font-weight:700;text-transform:capitalize;">${I18n.t('admin.' + sub.plan) || sub.plan} ${I18n.t('sub.plan')}</h3>
+                        <p style="font-size:0.85rem;color:var(--text-muted);">${I18n.t('sub.status')}: <span class="badge badge-${sub.status === 'active' ? 'active' : sub.status === 'expiring' ? 'expiring' : 'expired'}">${sub.status}</span></p>
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;">${I18n.t('sub.expires', [formatDate(sub.expiresAt)])}</p>
                     </div>
                 </div>
             </div>
-            <h3 style="font-size:1rem;font-weight:700;margin-bottom:16px;">Available Plans</h3>
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:16px;">${I18n.t('sub.availablePlans')}</h3>
             <div class="pricing-grid">
                 ${plans.map(p => `
                     <div class="pricing-card ${p.name.toLowerCase() === 'pro' ? 'popular' : ''}">
-                        <div class="pricing-name">${p.name}</div>
-                        <div class="pricing-price">$${p.price}<span>/mo</span></div>
+                        <div class="pricing-name">${I18n.t('admin.' + p.name.toLowerCase()) || p.name}</div>
+                        <div class="pricing-price">$${p.price}<span>/${I18n.t('admin.monthly')[0]}</span></div>
                         <ul class="pricing-features">${(p.features || []).map(f => `<li>${f}</li>`).join('')}</ul>
-                        <button class="btn ${sub.plan === p.name.toLowerCase() ? 'btn-ghost' : 'btn-primary'} btn-full" ${sub.plan === p.name.toLowerCase() ? 'disabled' : ''}>${sub.plan === p.name.toLowerCase() ? 'Current Plan' : 'Upgrade'}</button>
+                        <button class="btn ${sub.plan === p.name.toLowerCase() ? 'btn-ghost' : 'btn-primary'} btn-full" ${sub.plan === p.name.toLowerCase() ? 'disabled' : ''}>${sub.plan === p.name.toLowerCase() ? I18n.t('sub.currentPlan') : I18n.t('sub.upgrade')}</button>
                     </div>
                 `).join('')}
             </div>
-            <h3 style="font-size:1rem;font-weight:700;margin:24px 0 16px;">Payment History</h3>
+            <h3 style="font-size:1rem;font-weight:700;margin:24px 0 16px;">${I18n.t('sub.paymentHistory')}</h3>
             <div class="card table-card">
                 <div class="table-responsive">
-                    <table class="data-table"><thead><tr><th>Date</th><th>Amount</th><th>Plan</th><th>Method</th></tr></thead>
-                    <tbody>${payments.map(p => `<tr><td>${formatDate(p.date)}</td><td style="color:var(--green);font-weight:600;">$${p.amount}</td><td style="text-transform:capitalize;">${p.plan || '—'}</td><td style="text-transform:capitalize;">${p.method}</td></tr>`).join('')}</tbody></table>
+                    <table class="data-table"><thead><tr><th>${I18n.t('sub.date')}</th><th>${I18n.t('sub.amount')}</th><th>${I18n.t('sub.plan')}</th><th>${I18n.t('sub.method')}</th></tr></thead>
+                    <tbody>${payments.map(p => `<tr><td>${formatDate(p.date)}</td><td style="color:var(--green);font-weight:600;">$${p.amount}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + p.plan) || p.plan || '—'}</td><td style="text-transform:capitalize;">${I18n.t('sub.' + p.method) || p.method}</td></tr>`).join('')}</tbody></table>
                 </div>
-                ${payments.length === 0 ? '<p class="empty-state sm">No payment history</p>' : ''}
+                ${payments.length === 0 ? `<p class="empty-state sm">${I18n.t('sub.noHistory')}</p>` : ''}
             </div>
         `;
     },

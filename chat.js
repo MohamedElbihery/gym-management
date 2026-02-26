@@ -216,19 +216,19 @@ const AIAssistant = {
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1.27a7 7 0 0 1-12.46 0H6a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="9" cy="15" r="1" fill="currentColor"/><circle cx="15" cy="15" r="1" fill="currentColor"/></svg>
                         </div>
                         <div class="chat-header-info">
-                            <h3>${ar ? 'مساعد اللياقة الذكي' : 'AI Fitness Assistant'}</h3>
-                            <span class="chat-status">● ${ar ? 'متصل — مخصص لك' : 'Online — Personalized for you'}</span>
+                            <h3>${I18n.t('chat.title')}</h3>
+                            <span class="chat-status">● ${I18n.t('chat.status')}</span>
                         </div>
                     </div>
-                    <button class="btn btn-ghost btn-sm" onclick="AIAssistant.clearChat()">${ar ? 'مسح المحادثة' : 'Clear Chat'}</button>
+                    <button class="btn btn-ghost btn-sm" onclick="AIAssistant.clearChat()">${I18n.t('chat.clear')}</button>
                 </div>
 
                 <div class="chat-messages" id="chatMessages">
                     ${history.length === 0 ? `
                         <div class="chat-welcome">
                             <div class="chat-welcome-icon">🤖</div>
-                            <h3>${ar ? `أهلاً ${ctx.name}! أنا مساعدك الرياضي الذكي` : `Hi ${ctx.name}! I'm your AI Fitness Assistant`}</h3>
-                            <p>${ar ? `أعرف بياناتك — مستوى ${ctx.level === 'beginner' ? 'مبتدئ' : ctx.level === 'intermediate' ? 'متوسط' : 'متقدم'}، هدفك ${ctx.goal?.replace('_', ' ') || 'لياقة'}. اسألني أي شيء!` : `I know your profile — ${ctx.level} level, focused on ${ctx.goal?.replace('_', ' ') || 'fitness'}. Ask me anything!`}</p>
+                            <h3>${I18n.t('chat.welcomeTitle', [ctx.name])}</h3>
+                            <p>${I18n.t('chat.welcomeDesc', [I18n.t('level.' + ctx.level) || ctx.level, I18n.t('goal.' + ctx.goal) || ctx.goal])}</p>
                             <div class="chat-quick-actions">
                                 ${this.getQuickActions().map(a => `<button class="chat-quick-btn" onclick="AIAssistant.sendQuickAction('${a.msg.replace(/'/g, "\\'")}')">${a.label}</button>`).join('')}
                             </div>
@@ -241,7 +241,7 @@ const AIAssistant = {
                         ${this.getQuickActions().slice(0, 4).map(a => `<button class="chat-quick-chip" onclick="AIAssistant.sendQuickAction('${a.msg.replace(/'/g, "\\'")}')">${a.label}</button>`).join('')}
                     </div>
                     <div class="chat-input-wrap">
-                        <input type="text" id="chatInput" class="chat-input" placeholder="${ar ? 'اسألني أي شيء عن اللياقة...' : 'Ask me anything about fitness...'}" autocomplete="off">
+                        <input type="text" id="chatInput" class="chat-input" placeholder="${I18n.t('chat.placeholder')}" autocomplete="off">
                         <button class="chat-send-btn" id="chatSendBtn" onclick="AIAssistant.handleSend()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         </button>
@@ -346,6 +346,6 @@ const AIAssistant = {
             ApiClient.checkBackend().then(ok => { if (ok) ApiClient.clearChat(Auth.currentUser.id).catch(() => { }); });
         }
         this.renderChat();
-        showToast('Chat history cleared', 'success');
+        showToast(I18n.t('chat.historyCleared'), 'success');
     }
 };

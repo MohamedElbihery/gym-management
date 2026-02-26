@@ -22,16 +22,16 @@ const ChurnEngine = {
 
         if (last14 === 0 && last30 === 0) {
             attendanceScore = 30;
-            tags.push({ text: 'No visits 30d', color: 'var(--red-bg)', textColor: 'var(--red)' });
+            tags.push({ text: I18n.t('churn.noVisits30d'), color: 'var(--red-bg)', textColor: 'var(--red)' });
         } else if (last14 === 0) {
             attendanceScore = 24;
-            tags.push({ text: 'Inactive 14d+', color: 'var(--red-bg)', textColor: 'var(--red)' });
+            tags.push({ text: I18n.t('churn.inactive14d'), color: 'var(--red-bg)', textColor: 'var(--red)' });
         } else if (last14 < 2) {
             attendanceScore = 18;
-            tags.push({ text: 'Very low activity', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+            tags.push({ text: I18n.t('churn.veryLowActivity'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
         } else if (last14 < 4) {
             attendanceScore = 10;
-            tags.push({ text: 'Below avg activity', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+            tags.push({ text: I18n.t('churn.belowAvgActivity'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
         }
 
         // --- App Inactivity (0-30 pts) ---
@@ -41,13 +41,13 @@ const ChurnEngine = {
 
         if (daysSinceActivity > 30) {
             inactivityScore = 30;
-            tags.push({ text: 'Dormant 30d+', color: 'var(--red-bg)', textColor: 'var(--red)' });
+            tags.push({ text: I18n.t('churn.dormant30d'), color: 'var(--red-bg)', textColor: 'var(--red)' });
         } else if (daysSinceActivity > 14) {
             inactivityScore = 22;
-            tags.push({ text: 'Inactive 14d+', color: 'var(--red-bg)', textColor: 'var(--red)' });
+            tags.push({ text: I18n.t('churn.inactive14d'), color: 'var(--red-bg)', textColor: 'var(--red)' });
         } else if (daysSinceActivity > 7) {
             inactivityScore = 12;
-            tags.push({ text: 'Slowing down', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+            tags.push({ text: I18n.t('churn.slowingDown'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
         }
 
         // --- Subscription Expiry (0-40 pts) ---
@@ -57,20 +57,20 @@ const ChurnEngine = {
 
             if (daysUntilExpiry < 0) {
                 subscriptionScore = 40;
-                tags.push({ text: 'Expired', color: 'var(--red-bg)', textColor: 'var(--red)' });
+                tags.push({ text: I18n.t('churn.expired'), color: 'var(--red-bg)', textColor: 'var(--red)' });
             } else if (daysUntilExpiry <= 3) {
                 subscriptionScore = 32;
-                tags.push({ text: 'Expiring <3d', color: 'var(--red-bg)', textColor: 'var(--red)' });
+                tags.push({ text: I18n.t('churn.expiring3d'), color: 'var(--red-bg)', textColor: 'var(--red)' });
             } else if (daysUntilExpiry <= 7) {
                 subscriptionScore = 22;
-                tags.push({ text: 'Expiring <7d', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+                tags.push({ text: I18n.t('churn.expiring7d'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
             } else if (daysUntilExpiry <= 14) {
                 subscriptionScore = 10;
-                tags.push({ text: 'Expiring soon', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+                tags.push({ text: I18n.t('churn.expiringSoon'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
             }
         } else {
             subscriptionScore = 15;
-            tags.push({ text: 'No subscription', color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
+            tags.push({ text: I18n.t('churn.noSubscription'), color: 'var(--yellow-bg)', textColor: 'var(--yellow)' });
         }
 
         // Streak bonus reducer
@@ -99,10 +99,10 @@ const ChurnEngine = {
     },
 
     getRiskLabel(score) {
-        if (score >= 60) return 'CRITICAL';
-        if (score >= 40) return 'HIGH';
-        if (score >= 20) return 'MEDIUM';
-        return 'LOW';
+        if (score >= 60) return I18n.t('churn.criticalRisk').split(' ')[0];
+        if (score >= 40) return I18n.t('churn.highRisk').split(' ')[0];
+        if (score >= 20) return I18n.t('churn.mediumRisk').split(' ')[0];
+        return I18n.t('churn.lowRisk').split(' ')[0];
     },
 
     // Generate simulated weekly churn trend data
@@ -128,8 +128,8 @@ const ChurnEngine = {
 
     sendRetentionOffer(memberId, memberName) {
         Notifs.push(
-            '🎁 Retention Offer Sent',
-            `Special 20% off renewal offer sent to ${memberName}. Offer expires in 48 hours.`,
+            I18n.t('churn.offerSentTitle'),
+            I18n.t('churn.offerSentMsg', [memberName]),
             'success'
         );
         // Store the offer
@@ -143,7 +143,7 @@ const ChurnEngine = {
             status: 'sent'
         });
         Store.set('retention_offers', offers);
-        showToast(`Retention offer sent to ${memberName}!`, 'success');
+        showToast(I18n.t('churn.offerSentSuccess', [memberName]), 'success');
     },
 
     // ==================== RENDER ====================
@@ -166,34 +166,34 @@ const ChurnEngine = {
         const s = document.getElementById('section-a-churn');
         s.innerHTML = `
             <div class="section-header">
-                <h1>Churn Analysis</h1>
-                <p class="section-subtitle">Predictive member retention insights powered by AI scoring</p>
+                <h1>${I18n.t('churn.title')}</h1>
+                <p class="section-subtitle">${I18n.t('churn.subtitle')}</p>
             </div>
 
             <!-- KPI Row -->
             <div class="kpi-grid churn-kpi" style="margin-bottom:24px;">
                 <div class="kpi-card">
                     <div class="kpi-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-                    <div class="kpi-data"><span class="kpi-value">${critical}</span><span class="kpi-label">Critical Risk</span></div>
+                    <div class="kpi-data"><span class="kpi-value">${critical}</span><span class="kpi-label">${I18n.t('churn.criticalRisk')}</span></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-                    <div class="kpi-data"><span class="kpi-value">${high}</span><span class="kpi-label">High Risk</span></div>
+                    <div class="kpi-data"><span class="kpi-value">${high}</span><span class="kpi-label">${I18n.t('churn.highRisk')}</span></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-icon yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg></div>
-                    <div class="kpi-data"><span class="kpi-value">${medium}</span><span class="kpi-label">Medium Risk</span></div>
+                    <div class="kpi-data"><span class="kpi-value">${medium}</span><span class="kpi-label">${I18n.t('churn.mediumRisk')}</span></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-                    <div class="kpi-data"><span class="kpi-value">${low}</span><span class="kpi-label">Low Risk</span></div>
+                    <div class="kpi-data"><span class="kpi-value">${low}</span><span class="kpi-label">${I18n.t('churn.lowRisk')}</span></div>
                 </div>
             </div>
 
             <!-- Avg Churn Gauge + Trend Chart Row -->
             <div class="churn-charts-row">
                 <div class="card churn-gauge-card">
-                    <h3>Average Churn Risk</h3>
+                    <h3>${I18n.t('churn.avgChurnRisk')}</h3>
                     <div class="churn-gauge-wrap">
                         <div class="churn-gauge">
                             <svg viewBox="0 0 120 120">
@@ -205,19 +205,19 @@ const ChurnEngine = {
                             </svg>
                             <div class="churn-gauge-value">
                                 <span class="churn-pct" style="color:${this.getRiskColor(avgChurn)}">${avgChurn}%</span>
-                                <span class="churn-pct-label">Avg Risk</span>
+                                <span class="churn-pct-label">${I18n.t('churn.avgRisk')}</span>
                             </div>
                         </div>
                     </div>
                     <div class="churn-breakdown">
-                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--red)"></span>Critical: ${critical}</div>
-                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--orange-500)"></span>High: ${high}</div>
-                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--yellow)"></span>Medium: ${medium}</div>
-                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--green)"></span>Low: ${low}</div>
+                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--red)"></span>${I18n.t('churn.criticalRisk').split(' ')[0]}: ${critical}</div>
+                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--orange-500)"></span>${I18n.t('churn.highRisk').split(' ')[0]}: ${high}</div>
+                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--yellow)"></span>${I18n.t('churn.mediumRisk').split(' ')[0]}: ${medium}</div>
+                        <div class="churn-br-item"><span class="churn-dot" style="background:var(--green)"></span>${I18n.t('churn.lowRisk').split(' ')[0]}: ${low}</div>
                     </div>
                 </div>
                 <div class="card churn-trend-card">
-                    <h3>Churn Risk Trend (8 Weeks)</h3>
+                    <h3>${I18n.t('churn.riskTrend')}</h3>
                     <canvas id="churnTrendChart" height="220"></canvas>
                 </div>
             </div>
@@ -225,9 +225,9 @@ const ChurnEngine = {
             <!-- At Risk Members List -->
             <div class="card" style="margin-top:24px;">
                 <div class="card-header">
-                    <h3>🚨 At Risk Members <span class="churn-count-badge">${atRisk.length}</span></h3>
+                    <h3>${I18n.t('churn.atRiskMembers')} <span class="churn-count-badge">${atRisk.length}</span></h3>
                 </div>
-                ${atRisk.length === 0 ? '<p class="empty-state">All members are in good standing! 🎉</p>' :
+                ${atRisk.length === 0 ? `<p class="empty-state">${I18n.t('admin.allGood')}</p>` :
                 `<div class="churn-members-list">
                     ${atRisk.map((r, i) => `
                         <div class="churn-member-row">
@@ -249,7 +249,7 @@ const ChurnEngine = {
                                 <span class="badge churn-level-badge" style="background:${this.getRiskBg(r.churn.score)};color:${this.getRiskColor(r.churn.score)}">${this.getRiskLabel(r.churn.score)}</span>
                                 <button class="btn btn-sm btn-retention" onclick="ChurnEngine.sendRetentionOffer('${r.id}','${r.name}')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                                    Send Offer
+                                    ${I18n.t('churn.sendOffer')}
                                 </button>
                             </div>
                         </div>
@@ -274,7 +274,7 @@ const ChurnEngine = {
             data: {
                 labels: trend.map(t => t.label),
                 datasets: [{
-                    label: 'Avg Churn Risk %',
+                    label: I18n.t('churn.avgChurnRiskLabel'),
                     data: trend.map(t => t.avgRisk),
                     borderColor: '#f97316',
                     backgroundColor: 'rgba(249,115,22,0.08)',
@@ -302,7 +302,7 @@ const ChurnEngine = {
                         cornerRadius: 10,
                         padding: 12,
                         callbacks: {
-                            label: ctx => `Risk: ${ctx.raw}%`
+                            label: ctx => `${I18n.t('admin.riskScore') || 'Risk'}: ${ctx.raw}%`
                         }
                     }
                 },
@@ -334,7 +334,7 @@ const ChurnEngine = {
                 </div>
                 <div class="kpi-data">
                     <span class="kpi-value">${atRisk}</span>
-                    <span class="kpi-label">At-Risk Members</span>
+                    <span class="kpi-label">${I18n.t('churn.atRiskMembersLabel')}</span>
                 </div>
             </div>
         `;

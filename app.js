@@ -18,31 +18,37 @@ function showToast(msg, type = 'success') {
     const c = document.getElementById('toastContainer');
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    t.textContent = msg;
+    // If msg starts with a translation key prefix, translate it
+    const translated = (msg.includes('.') || msg.startsWith('general.')) ? I18n.t(msg) : msg;
+    t.textContent = translated;
     c.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; setTimeout(() => t.remove(), 300); }, 3000);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = `translateX(${I18n.currentLang === 'ar' ? '-40px' : '40px'})`; setTimeout(() => t.remove(), 300); }, 3000);
 }
 
 // ==================== UTILITIES ====================
 function formatDate(iso) {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(iso).toLocaleDateString(I18n.currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 function formatTime(iso) {
     if (!iso) return '';
-    return new Date(iso).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return new Date(iso).toLocaleTimeString(I18n.currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
 }
 function timeAgo(iso) {
     const diff = Date.now() - new Date(iso).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 1) return 'Just now';
-    if (mins < 60) return `${mins}m ago`;
+    if (mins < 1) return I18n.t('general.justNow');
+    if (mins < 60) return I18n.t('general.minsAgo', [mins]);
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs}h ago`;
-    return `${Math.floor(hrs / 24)}d ago`;
+    if (hrs < 24) return I18n.t('general.hrsAgo', [hrs]);
+    return I18n.t('general.daysAgo', [Math.floor(hrs / 24)]);
 }
 function todayStr() { return new Date().toISOString().split('T')[0]; }
-function dayName(i) { return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][i]; }
+function dayName(i) {
+    const enDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const arDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    return I18n.currentLang === 'ar' ? arDays[i] : enDays[i];
+}
 function todayDayIndex() { return new Date().getDay(); }
 
 // ==================== MODAL HELPERS ====================
@@ -134,11 +140,11 @@ const Auth = {
         const pass = document.getElementById('loginPass').value;
         const users = Store.getA('users');
         const user = users.find(u => u.email === email && u.password === pass);
-        if (!user) { showToast('Invalid credentials', 'error'); return; }
+        if (!user) { showToast('general.invalidCreds', 'error'); return; }
         this.currentUser = user;
         Store.set('session', user);
         this.enterApp();
-        showToast(`Welcome back, ${user.name}!`);
+        showToast(I18n.t('general.welcomeUser', [user.name]));
     },
     register(e) {
         e.preventDefault();
@@ -184,7 +190,7 @@ const Auth = {
             if (typeof Gamification !== 'undefined') Gamification.addXP(user.id, 100, 'Welcome bonus');
         }
         this.enterApp();
-        showToast(`Account created! Welcome, ${user.name}!`);
+        showToast(I18n.t('general.accountCreated', [user.name]));
     },
     demoLogin(role) {
         DemoData.seed();
@@ -194,7 +200,7 @@ const Auth = {
         this.currentUser = user;
         Store.set('session', user);
         this.enterApp();
-        showToast(`Logged in as demo ${role}`);
+        showToast(I18n.t('general.demoLogin', [role]));
     },
     logout() {
         Store.remove('session');
@@ -210,8 +216,8 @@ const Auth = {
         const u = this.currentUser;
         document.getElementById('sidebarAvatar').textContent = u.name.charAt(0).toUpperCase();
         document.getElementById('sidebarName').textContent = u.name;
-        document.getElementById('sidebarRole').textContent = u.role;
-        document.getElementById('topBarGreeting').innerHTML = `Welcome, <strong>${u.name}</strong>`;
+        document.getElementById('sidebarRole').textContent = I18n.t('auth.' + u.role);
+        document.getElementById('topBarGreeting').innerHTML = I18n.t('dash.welcomeName', [u.name]);
         // Show role nav
         document.querySelectorAll('.role-nav').forEach(n => n.style.display = 'none');
         const navId = u.role === 'member' ? 'memberNav' : u.role === 'trainer' ? 'trainerNav' : 'adminNav';
@@ -403,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
         otpForm.addEventListener('submit', async e => {
             e.preventDefault();
             const digits = Array.from(document.querySelectorAll('.otp-digit')).map(i => i.value).join('');
-            if (digits.length !== 6) { showToast('Enter all 6 digits', 'error'); return; }
+            if (digits.length !== 6) { showToast('general.otpEnterAll', 'error'); return; }
 
             const pendingEmail = Store.get('pending_otp_email');
             if (!pendingEmail) { showToast('Session expired', 'error'); return; }
@@ -430,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!pendingEmail) return;
             try {
                 await ApiClient.resendOTP(pendingEmail);
-                showToast('OTP resent!');
+                showToast('general.otpResent');
                 Auth.startOTPCountdown();
             } catch (err) {
                 showToast(err.error || 'Failed to resend', 'error');
@@ -452,7 +458,7 @@ Auth.startOTPCountdown = function () {
         el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
         if (seconds <= 0) {
             clearInterval(this._otpTimer);
-            el.textContent = 'Expired';
+            el.textContent = I18n.t('general.otpExpired');
         }
     }, 1000);
 };
@@ -462,7 +468,7 @@ Auth.showOTP = function (email) {
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('registerCard').style.display = 'none';
     document.getElementById('otpCard').style.display = 'block';
-    document.getElementById('otpEmailDisplay').textContent = `Enter the 6-digit code sent to ${email}`;
+    document.getElementById('otpEmailDisplay').textContent = I18n.t('general.otpSent', [email]);
     document.querySelectorAll('.otp-digit').forEach(i => i.value = '');
     document.querySelector('.otp-digit')?.focus();
     Store.set('pending_otp_email', email);

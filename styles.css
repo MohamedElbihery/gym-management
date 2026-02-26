@@ -3823,3 +3823,130 @@ textarea.form-control {
     animation: pulseGlow 3s infinite;
     border-radius: 50%;
 }
+
+/* ============================================
+   RTL & Arabic Support
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+
+[lang="ar"] {
+    font-family: 'Cairo', 'Outfit', sans-serif;
+}
+
+body.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Sidebar Flip */
+body.rtl .sidebar {
+    left: auto;
+    right: 0;
+    border-right: none;
+    border-left: 1px solid var(--border);
+}
+
+body.rtl .main-content {
+    margin-left: 0;
+    margin-right: var(--sidebar-width);
+}
+
+body.rtl .nav-item.active::before {
+    left: auto;
+    right: 0;
+    border-radius: 4px 0 0 4px;
+}
+
+body.rtl .nav-item svg {
+    margin-right: 0;
+    margin-left: 11px;
+}
+
+/* Notification Panel Flip */
+body.rtl .notif-panel {
+    right: auto;
+    left: -380px;
+    border-left: none;
+    border-right: 1px solid var(--border);
+}
+
+body.rtl .notif-panel.open {
+    left: 0;
+}
+
+/* Form Groups Layout */
+body.rtl .form-row {
+    flex-direction: row;
+}
+
+/* Toast/Alerts adjustments */
+body.rtl .toast-container {
+    left: 24px;
+    right: auto;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 992px) {
+    body.rtl .main-content {
+        margin-right: 0;
+    }
+    
+    body.rtl .sidebar {
+        transform: translateX(100%);
+    }
+    
+    body.rtl .sidebar.show {
+        transform: translateX(0);
+    }
+}
+
+/* Animation direction flips */
+@keyframes rtlFadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.rtl .section {
+    animation: rtlFadeSlideIn 0.35s ease;
+}
+
+/* Icons rotate if they have direction */
+body.rtl .btn svg[viewBox*="24"] path[d*="M9 21H5"] { /* Logout icon flip */
+    transform: scaleX(-1);
+    transform-origin: center;
+}
+
+/* Flag and Toggle adjustments */
+.lang-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: all var(--transition);
+}
+
+.lang-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.lang-flag {
+    font-size: 1.1rem;
+}
+
+body.rtl .btn-logout {
+    margin-left: 0;
+    margin-right: auto;
+}

@@ -27,8 +27,8 @@ const HealthSync = {
         // Generate initial data
         this.generateHealthData();
         this.startBackgroundSync();
-        showToast(`Connected to ${provider === 'apple' ? 'Apple Health' : 'Google Fit'}!`, 'success');
-        Notifs.push('🏥 Health Connected', `Successfully synced with ${provider === 'apple' ? 'Apple Health' : 'Google Fit'}`, 'success');
+        showToast(I18n.t('health.connectSuccess', [provider === 'apple' ? 'Apple Health' : 'Google Fit']), 'success');
+        Notifs.push(I18n.t('health.connect'), I18n.t('health.syncSuccess', [provider === 'apple' ? 'Apple Health' : 'Google Fit']), 'success');
         this.renderHealthDashboard();
     },
 
@@ -37,7 +37,7 @@ const HealthSync = {
         Store.set(`health_connected_${Auth.currentUser.id}`, 'false');
         Store.remove(`health_provider_${Auth.currentUser.id}`);
         this.stopBackgroundSync();
-        showToast('Health data disconnected', 'info');
+        showToast(I18n.t('health.disconnected'), 'info');
         this.renderHealthDashboard();
     },
 
@@ -105,12 +105,12 @@ const HealthSync = {
 
         if (!this.isConnected()) {
             s.innerHTML = `
-                <div class="section-header"><h1>Health Data</h1><p class="section-subtitle">Sync your health & fitness data</p></div>
+                <div class="section-header"><h1>${I18n.t('health.title')}</h1><p class="section-subtitle">${I18n.t('health.subtitle')}</p></div>
                 <div class="health-connect-container">
                     <div class="health-connect-card">
                         <div class="health-connect-icon">❤️</div>
-                        <h2>Connect Your Health App</h2>
-                        <p>Sync steps, calories, heart rate and more from your favorite health platform.</p>
+                        <h2>${I18n.t('health.connect')}</h2>
+                        <p>${I18n.t('health.connectDesc')}</p>
                         <div class="health-connect-btns">
                             <button class="health-provider-btn apple" onclick="HealthSync.connect('apple')">
                                 <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -121,7 +121,7 @@ const HealthSync = {
                                 Google Fit
                             </button>
                         </div>
-                        <p class="health-connect-note">🔒 Your data stays private and is stored locally on your device.</p>
+                        <p class="health-connect-note">${I18n.t('health.privateNote')}</p>
                     </div>
                 </div>
             `;
@@ -142,10 +142,10 @@ const HealthSync = {
         s.innerHTML = `
             <div class="section-header">
                 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-                    <div><h1>Health Data</h1><p class="section-subtitle">Synced from ${provider === 'apple' ? 'Apple Health' : 'Google Fit'}</p></div>
+                    <div><h1>${I18n.t('health.title')}</h1><p class="section-subtitle">${I18n.t('health.syncedFrom', [provider === 'apple' ? 'Apple Health' : 'Google Fit'])}</p></div>
                     <div style="display:flex;gap:8px;align-items:center;">
-                        <span class="health-connected-badge">● Connected</span>
-                        <button class="btn btn-ghost btn-sm" onclick="HealthSync.disconnect()">Disconnect</button>
+                        <span class="health-connected-badge">● ${I18n.t('health.connectedBadge')}</span>
+                        <button class="btn btn-ghost btn-sm" onclick="HealthSync.disconnect()">${I18n.t('health.disconnect')}</button>
                     </div>
                 </div>
             </div>
@@ -154,8 +154,8 @@ const HealthSync = {
             <div class="health-cards-grid">
                 <div class="health-card health-steps-card">
                     <div class="health-card-header">
-                        <span class="health-card-title">👣 Steps</span>
-                        <span class="health-card-badge">Today</span>
+                        <span class="health-card-title">${I18n.t('health.steps')}</span>
+                        <span class="health-card-badge">${I18n.t('health.today')}</span>
                     </div>
                     <div class="health-card-body">
                         <div class="health-circular-progress" style="--progress:${stepsPct};--color:#22c55e">
@@ -172,15 +172,15 @@ const HealthSync = {
                         </div>
                     </div>
                     <div class="health-card-footer">
-                        <span>Weekly: ${weeklySteps.toLocaleString()} steps</span>
-                        <span>${today?.distance || 0} km</span>
+                        <span>${I18n.t('health.weekly', [weeklySteps.toLocaleString()])}</span>
+                        <span>${today?.distance || 0} ${I18n.t('trainer.km') || 'km'}</span>
                     </div>
                 </div>
 
                 <div class="health-card health-calories-card">
                     <div class="health-card-header">
-                        <span class="health-card-title">🔥 Calories</span>
-                        <span class="health-card-badge">Today</span>
+                        <span class="health-card-title">${I18n.t('health.calories')}</span>
+                        <span class="health-card-badge">${I18n.t('health.today')}</span>
                     </div>
                     <div class="health-card-body">
                         <div class="health-circular-progress" style="--progress:${calPct};--color:#f97316">
@@ -197,15 +197,15 @@ const HealthSync = {
                         </div>
                     </div>
                     <div class="health-card-footer">
-                        <span>Avg: ${avgCalories} kcal/day</span>
-                        <span>${today?.activeMinutes || 0} active min</span>
+                        <span>${I18n.t('health.avgDay', [avgCalories])}</span>
+                        <span>${I18n.t('health.activeMin', [today?.activeMinutes || 0])}</span>
                     </div>
                 </div>
 
                 <div class="health-card health-hr-card">
                     <div class="health-card-header">
-                        <span class="health-card-title">❤️ Heart Rate</span>
-                        <span class="health-card-badge">Latest</span>
+                        <span class="health-card-title">${I18n.t('health.heartRate')}</span>
+                        <span class="health-card-badge">${I18n.t('health.latest')}</span>
                     </div>
                     <div class="health-card-body health-hr-body">
                         <div class="health-hr-main">
@@ -213,25 +213,25 @@ const HealthSync = {
                             <span class="health-hr-unit">BPM</span>
                         </div>
                         <div class="health-hr-stats">
-                            <div class="health-hr-stat"><span class="health-hr-stat-label">Resting</span><span class="health-hr-stat-val">${today?.heartRate?.resting || '--'}</span></div>
-                            <div class="health-hr-stat"><span class="health-hr-stat-label">Avg</span><span class="health-hr-stat-val">${today?.heartRate?.avg || '--'}</span></div>
-                            <div class="health-hr-stat"><span class="health-hr-stat-label">Max</span><span class="health-hr-stat-val">${today?.heartRate?.max || '--'}</span></div>
+                            <div class="health-hr-stat"><span class="health-hr-stat-label">${I18n.t('health.resting')}</span><span class="health-hr-stat-val">${today?.heartRate?.resting || '--'}</span></div>
+                            <div class="health-hr-stat"><span class="health-hr-stat-label">${I18n.t('health.avg')}</span><span class="health-hr-stat-val">${today?.heartRate?.avg || '--'}</span></div>
+                            <div class="health-hr-stat"><span class="health-hr-stat-label">${I18n.t('health.max')}</span><span class="health-hr-stat-val">${today?.heartRate?.max || '--'}</span></div>
                         </div>
                     </div>
                     <div class="health-card-footer">
-                        <span>Avg: ${avgHR} BPM</span>
-                        <span class="health-hr-zone">${avgHR < 70 ? '🟢 Excellent' : avgHR < 80 ? '🟡 Good' : '🟠 Moderate'}</span>
+                        <span>${I18n.t('health.avgBPM', [avgHR])}</span>
+                        <span class="health-hr-zone">${avgHR < 70 ? `🟢 ${I18n.t('health.zoneExcel')}` : avgHR < 80 ? `🟡 ${I18n.t('health.zoneGood')}` : `🟠 ${I18n.t('health.zoneMod')}`}</span>
                     </div>
                 </div>
             </div>
 
             <!-- 7-Day Charts -->
             <div class="health-charts-row">
-                <div class="card"><h3>Steps (7 Days)</h3><canvas id="healthStepsChart" height="180"></canvas></div>
-                <div class="card"><h3>Calories Burned (7 Days)</h3><canvas id="healthCaloriesChart" height="180"></canvas></div>
+                <div class="card"><h3>${I18n.t('health.stepsChart')}</h3><canvas id="healthStepsChart" height="180"></canvas></div>
+                <div class="card"><h3>${I18n.t('health.calChart')}</h3><canvas id="healthCaloriesChart" height="180"></canvas></div>
             </div>
             <div class="health-charts-row" style="margin-top:16px;">
-                <div class="card"><h3>Heart Rate Trend (7 Days)</h3><canvas id="healthHRChart" height="180"></canvas></div>
+                <div class="card"><h3>${I18n.t('health.hrChart')}</h3><canvas id="healthHRChart" height="180"></canvas></div>
             </div>
         `;
 
@@ -245,7 +245,8 @@ const HealthSync = {
             scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#64647a', font: { size: 11 } } }, x: { grid: { display: false }, ticks: { color: '#64647a', font: { size: 11 } } } }
         });
 
-        const days = data.map(d => { const dt = new Date(d.date); return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dt.getDay()]; });
+        const daysKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+        const days = data.map(d => { const dt = new Date(d.date); return I18n.t('day.' + daysKeys[dt.getDay()]); });
 
         // Steps chart
         const stepsCtx = document.getElementById('healthStepsChart');
@@ -272,9 +273,9 @@ const HealthSync = {
             this.heartRateChart = new Chart(hrCtx, {
                 type: 'line', data: {
                     labels: days, datasets: [
-                        { label: 'Resting', data: data.map(d => d.heartRate.resting), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
-                        { label: 'Average', data: data.map(d => d.heartRate.avg), borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
-                        { label: 'Max', data: data.map(d => d.heartRate.max), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
+                        { label: I18n.t('health.resting'), data: data.map(d => d.heartRate.resting), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
+                        { label: I18n.t('health.avg'), data: data.map(d => d.heartRate.avg), borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
+                        { label: I18n.t('health.max'), data: data.map(d => d.heartRate.max), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.05)', fill: false, tension: 0.4, borderWidth: 2, pointRadius: 3 },
                     ]
                 }, options: { ...chartOpts(), plugins: { ...chartOpts().plugins, legend: { display: true, labels: { color: '#a1a1aa', usePointStyle: true, pointStyle: 'circle', padding: 16, font: { size: 11 } } } } }
             });

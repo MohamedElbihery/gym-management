@@ -92,7 +92,7 @@ const ChallengeSystem = {
         if (!Auth.currentUser) return;
         const parts = Store.getA('challenge_participation');
         if (parts.some(p => p.challengeId === challengeId && p.userId === Auth.currentUser.id)) {
-            showToast('Already joined this challenge!', 'info');
+            showToast(I18n.t('challenges.alreadyJoined'), 'info');
             return;
         }
         parts.push({
@@ -109,7 +109,7 @@ const ChallengeSystem = {
         if (userParts.length >= 3) this.unlockBadge('B007');
 
         Gamification.addXP(Auth.currentUser.id, 25, 'Joined challenge');
-        showToast('Challenge joined! 🎯', 'success');
+        showToast(I18n.t('challenges.joinedSuccess'), 'success');
         this.renderChallenges();
     },
 
@@ -118,7 +118,7 @@ const ChallengeSystem = {
         let parts = Store.getA('challenge_participation');
         parts = parts.filter(p => !(p.challengeId === challengeId && p.userId === Auth.currentUser.id));
         Store.set('challenge_participation', parts);
-        showToast('Left the challenge', 'info');
+        showToast(I18n.t('challenges.leftSuccess'), 'info');
         this.renderChallenges();
     },
 
@@ -169,8 +169,8 @@ const ChallengeSystem = {
         Store.set(`badges_${Auth.currentUser.id}`, badges);
         const badge = this.badges.find(b => b.id === badgeId);
         if (badge) {
-            Notifs.push(`🏅 Badge Unlocked!`, `You earned the "${badge.name}" ${badge.emoji} badge!`, 'success');
-            showToast(`Badge unlocked: ${badge.emoji} ${badge.name}!`, 'success');
+            Notifs.push(I18n.t('challenges.badgeUnlockedTitle'), I18n.t('challenges.badgeUnlockedMsg', [badge.name, badge.emoji]), 'success');
+            showToast(I18n.t('challenges.badgeUnlockedMsg', [badge.name, badge.emoji]), 'success');
         }
     },
 
@@ -189,7 +189,7 @@ const ChallengeSystem = {
         this.seedDemoParticipation();
 
         s.innerHTML = `
-            <div class="section-header"><h1>Community Challenges</h1><p class="section-subtitle">Compete, earn XP, unlock badges, and climb the leaderboard!</p></div>
+            <div class="section-header"><h1>${I18n.t('challenges.title')}</h1><p class="section-subtitle">${I18n.t('challenges.subtitle')}</p></div>
 
             <!-- Active Challenges -->
             <div class="challenges-grid">
@@ -212,50 +212,50 @@ const ChallengeSystem = {
                             </div>
 
                             <div class="challenge-countdown">
-                                ${cd.expired ? '<span class="challenge-ended">Challenge Ended</span>' : `
-                                    <div class="countdown-unit"><span class="cd-num">${cd.days}</span><span class="cd-label">Days</span></div>
+                                ${cd.expired ? `<span class="challenge-ended">${I18n.t('challenges.ended')}</span>` : `
+                                    <div class="countdown-unit"><span class="cd-num">${cd.days}</span><span class="cd-label">${I18n.t('challenges.days')}</span></div>
                                     <div class="countdown-sep">:</div>
-                                    <div class="countdown-unit"><span class="cd-num">${cd.hours}</span><span class="cd-label">Hrs</span></div>
+                                    <div class="countdown-unit"><span class="cd-num">${cd.hours}</span><span class="cd-label">${I18n.t('challenges.hrs')}</span></div>
                                     <div class="countdown-sep">:</div>
-                                    <div class="countdown-unit"><span class="cd-num">${cd.minutes}</span><span class="cd-label">Min</span></div>
+                                    <div class="countdown-unit"><span class="cd-num">${cd.minutes}</span><span class="cd-label">${I18n.t('challenges.min')}</span></div>
                                 `}
                             </div>
 
                             <div class="challenge-stats">
-                                <div class="challenge-stat"><span class="cs-val">${participants}</span><span class="cs-label">Participants</span></div>
-                                <div class="challenge-stat"><span class="cs-val">${c.xpReward}</span><span class="cs-label">XP Reward</span></div>
-                                <div class="challenge-stat"><span class="cs-val">${c.badge.emoji}</span><span class="cs-label">Badge</span></div>
+                                <div class="challenge-stat"><span class="cs-val">${participants}</span><span class="cs-label">${I18n.t('challenges.participants')}</span></div>
+                                <div class="challenge-stat"><span class="cs-val">${c.xpReward}</span><span class="cs-label">${I18n.t('challenges.xpReward')}</span></div>
+                                <div class="challenge-stat"><span class="cs-val">${c.badge.emoji}</span><span class="cs-label">${I18n.t('challenges.badge')}</span></div>
                             </div>
 
                             ${joined ? `
                                 <div class="challenge-progress">
                                     <div class="challenge-progress-header">
-                                        <span>Your Progress</span>
+                                        <span>${I18n.t('challenges.yourProgress')}</span>
                                         <span style="color:${colors[i % colors.length]}">${pct}%</span>
                                     </div>
                                     <div class="challenge-progress-bar">
                                         <div class="challenge-progress-fill" style="width:${pct}%;background:${colors[i % colors.length]}"></div>
                                     </div>
                                     <div class="challenge-progress-footer">
-                                        <span>${progress.toLocaleString()} / ${c.goal.toLocaleString()} ${c.unit}</span>
-                                        ${rank > 0 ? `<span>Rank #${rank}</span>` : ''}
+                                        <span>${progress.toLocaleString()} / ${c.goal.toLocaleString()} ${I18n.t('trainer.' + c.unit) || c.unit}</span>
+                                        ${rank > 0 ? `<span>${I18n.t('challenges.rank')} #${rank}</span>` : ''}
                                     </div>
                                 </div>
-                                <button class="btn btn-ghost btn-sm challenge-leave-btn" onclick="ChallengeSystem.leaveChallenge('${c.id}')">Leave Challenge</button>
+                                <button class="btn btn-ghost btn-sm challenge-leave-btn" onclick="ChallengeSystem.leaveChallenge('${c.id}')">${I18n.t('challenges.leave')}</button>
                             ` : `
                                 <button class="btn btn-primary challenge-join-btn" style="background:linear-gradient(135deg,${colors[i % colors.length]},${colors[i % colors.length]}dd)" onclick="ChallengeSystem.joinChallenge('${c.id}')">
-                                    Join Challenge 🚀
+                                    ${I18n.t('challenges.join')}
                                 </button>
                             `}
 
                             <!-- Mini Leaderboard -->
                             ${lb.length > 0 ? `
                                 <div class="challenge-lb">
-                                    <h4>Top 5</h4>
+                                    <h4>${I18n.t('challenges.top5')}</h4>
                                     ${lb.slice(0, 5).map((l, ri) => `
                                         <div class="challenge-lb-row ${l.userId === userId ? 'challenge-lb-me' : ''}">
                                             <span class="challenge-lb-rank">${ri + 1}</span>
-                                            <span class="challenge-lb-name">${l.name}${l.userId === userId ? ' (You)' : ''}</span>
+                                            <span class="challenge-lb-name">${l.name}${l.userId === userId ? ` ${I18n.t('challenges.you')}` : ''}</span>
                                             <span class="challenge-lb-pct">${l.pct}%</span>
                                         </div>
                                     `).join('')}
@@ -268,16 +268,16 @@ const ChallengeSystem = {
 
             <!-- Achievement Badges -->
             <div class="card badges-section" style="margin-top:28px;">
-                <div class="card-header"><h3>🏅 Achievement Badges</h3></div>
+                <div class="card-header"><h3>${I18n.t('challenges.badgesTitle')}</h3></div>
                 <div class="badges-grid">
                     ${this.badges.map(b => {
             const unlocked = userBadges.includes(b.id);
             return `
                             <div class="badge-item ${unlocked ? 'badge-unlocked' : 'badge-locked'}">
                                 <div class="badge-icon" style="${unlocked ? `background:${b.color}20;color:${b.color}` : ''}">${b.emoji}</div>
-                                <div class="badge-name">${b.name}</div>
-                                <div class="badge-desc">${b.description}</div>
-                                ${unlocked ? '<span class="badge-status unlocked">✓ Unlocked</span>' : '<span class="badge-status locked">🔒 Locked</span>'}
+                                <div class="badge-name">${I18n.t('challenges.badge_' + b.id + '_name') || b.name}</div>
+                                <div class="badge-desc">${I18n.t('challenges.badge_' + b.id + '_desc') || b.description}</div>
+                                ${unlocked ? `<span class="badge-status unlocked">${I18n.t('challenges.unlocked')}</span>` : `<span class="badge-status locked">${I18n.t('challenges.locked')}</span>`}
                             </div>
                         `;
         }).join('')}
@@ -320,8 +320,8 @@ const ChallengeSystem = {
         s.innerHTML = `
             <div class="section-header">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-                    <div><h1>Manage Challenges</h1><p class="section-subtitle">Create and monitor community challenges</p></div>
-                    <button class="btn btn-primary" onclick="openModal('challengeModal')">+ New Challenge</button>
+                    <div><h1>${I18n.t('challenges.manageTitle')}</h1><p class="section-subtitle">${I18n.t('challenges.manageSubtitle')}</p></div>
+                    <button class="btn btn-primary" onclick="openModal('challengeModal')">+ ${I18n.t('challenges.newChallenge')}</button>
                 </div>
             </div>
 
@@ -339,15 +339,15 @@ const ChallengeSystem = {
                                     <p class="text-muted">${c.description}</p>
                                     <div class="challenge-admin-meta">
                                         <span>🏆 ${c.xpReward} XP</span>
-                                        <span>👥 ${parts.length} participants</span>
-                                        <span>🎯 ${c.goal.toLocaleString()} ${c.unit}</span>
+                                        <span>👥 ${parts.length} ${I18n.t('challenges.participants').toLowerCase()}</span>
+                                        <span>🎯 ${c.goal.toLocaleString()} ${I18n.t('trainer.' + c.unit) || c.unit}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="challenge-admin-right">
-                                <span class="badge ${isActive ? 'badge-active' : 'badge-expired'}">${isActive ? 'Active' : 'Ended'}</span>
-                                ${isActive ? `<span class="text-muted" style="font-size:0.78rem">${cd.days}d ${cd.hours}h left</span>` : ''}
-                                <button class="btn btn-ghost btn-sm" onclick="ChallengeSystem.deleteChallenge('${c.id}')">Delete</button>
+                                <span class="badge ${isActive ? 'badge-active' : 'badge-expired'}">${isActive ? I18n.t('challenges.active') : I18n.t('challenges.ended')}</span>
+                                ${isActive ? `<span class="text-muted" style="font-size:0.78rem">${cd.days}${I18n.t('challenges.days')[0]} ${cd.hours}${I18n.t('challenges.hrs')[0]} ${I18n.t('challenges.left')}</span>` : ''}
+                                <button class="btn btn-ghost btn-sm" onclick="ChallengeSystem.deleteChallenge('${c.id}')">${I18n.t('admin.delete')}</button>
                             </div>
                         </div>
                     `;
@@ -385,7 +385,7 @@ const ChallengeSystem = {
         challenges.push(challenge);
         Store.set('challenges', challenges);
         closeModal('challengeModal');
-        showToast('Challenge created! 🎯', 'success');
+        showToast(I18n.t('challenges.createdSuccess'), 'success');
         this.renderAdminChallenges();
     },
 
@@ -394,7 +394,7 @@ const ChallengeSystem = {
         Store.set('challenges', challenges);
         let parts = Store.getA('challenge_participation').filter(p => p.challengeId !== id);
         Store.set('challenge_participation', parts);
-        showToast('Challenge deleted', 'info');
+        showToast(I18n.t('challenges.deletedSuccess'), 'info');
         this.renderAdminChallenges();
     }
 };
