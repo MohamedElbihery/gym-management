@@ -138,19 +138,33 @@ const Auth = {
             document.getElementById('appShell').style.display = 'none';
         }
     },
-    login(e) {
+    async login(e) {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim().toLowerCase();
         const pass = document.getElementById('loginPass').value;
-        const users = Store.getA('users');
-        const user = users.find(u => u.email === email && u.password === pass);
-        if (!user) { showToast('general.invalidCreds', 'error'); return; }
-        this.currentUser = user;
-        Store.set('session', user);
-        this.enterApp();
-        showToast(I18n.t('general.welcomeUser', [user.name]));
+
+        try {
+            const data = await ApiClient.login(email, pass);
+            this.currentUser = data.user;
+            Store.set('session', data.user);
+            this.enterApp();
+            showToast(I18n.t('general.welcomeUser', [data.user.name]));
+        } catch (err) {
+            console.error('Login error:', err);
+            // Fallback for demo if no backend (optional, but let's prioritize backend now)
+            const users = Store.getA('users');
+            const user = users.find(u => u.email === email && u.password === pass);
+            if (user) {
+                this.currentUser = user;
+                Store.set('session', user);
+                this.enterApp();
+                showToast(I18n.t('general.welcomeUser', [user.name]));
+            } else {
+                showToast(err.error || 'general.invalidCreds', 'error');
+            }
+        }
     },
-    register(e) {
+    async register(e) {
         e.preventDefault();
         const role = document.getElementById('regRole').value;
         const userData = {
@@ -170,18 +184,17 @@ const Auth = {
             userData.workout_days = parseInt(document.getElementById('regDays').value) || 4;
         }
 
-        // Use backend if available
-        ApiClient.checkBackend().then(available => {
+        try {
+            const available = await ApiClient.checkBackend();
             if (available) {
-                ApiClient.register(userData)
-                    .then(res => {
-                        this.showOTP(userData.email);
-                        showToast(res.message);
-                    })
-                    .catch(err => {
-                        showToast(err.error || 'Registration failed', 'error');
-                    });
+                const res = await ApiClient.register(userData);
+                this.showOTP(userData.email);
+                showToast(res.message);
             } else {
+                throw new Error('Offline mode');
+            }
+        } catch (err) {
+            if (err.message === 'Offline mode' || err.offline) {
                 // Fallback to local storage
                 const users = Store.getA('users');
                 if (users.find(u => u.email === userData.email)) {
@@ -216,8 +229,10 @@ const Auth = {
                 Store.set('session', user);
                 this.enterApp();
                 showToast(I18n.t('general.accountCreated', [user.name]));
+            } else {
+                showToast(err.error || 'Registration failed', 'error');
             }
-        });
+        }
     },
     logout() {
         Store.remove('session');
