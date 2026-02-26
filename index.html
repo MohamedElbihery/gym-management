@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymForge Pro — AI-Powered Fitness Platform</title>
+    <meta name="description"
+        content="GymForge Pro: AI-powered gym SaaS with personalized workouts, nutrition tracking, gamification, and smart analytics.">
+    <meta name="theme-color" content="#ff6b00">
+    <meta property="og:title" content="GymForge Pro — AI-Powered Fitness Platform">
+    <meta property="og:description"
+        content="Personalized AI workouts, nutrition tracking, gamification, and smart analytics.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ═══════════════ AUTH SCREEN ═══════════════ -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-bg">
+            <div class="auth-hero-img"></div>
+            <div class="auth-hero-overlay"></div>
+            <div class="auth-glow g1"></div>
+            <div class="auth-glow g2"></div>
+            <div class="auth-glow g3"></div>
+        </div>
+        <div class="auth-container">
+            <div class="auth-brand">
+                <div class="auth-logo">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <rect x="4" y="16" width="32" height="8" rx="2" fill="currentColor" />
+                        <rect x="8" y="10" width="6" height="20" rx="2" fill="currentColor" />
+                        <rect x="26" y="10" width="6" height="20" rx="2" fill="currentColor" />
+                        <rect x="2" y="13" width="4" height="14" rx="2" fill="currentColor" opacity="0.6" />
+                        <rect x="34" y="13" width="4" height="14" rx="2" fill="currentColor" opacity="0.6" />
+                    </svg>
+                </div>
+                <h1 class="auth-title">Gym<span class="accent">Forge</span> <span class="pro-badge">PRO</span></h1>
+                <p class="auth-tagline">AI-Powered Fitness Platform</p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div class="auth-card" id="loginCard">
+                <h2>Welcome Back</h2>
+                <p class="auth-sub">Sign in to your account</p>
+                <form id="loginForm">
+                    <div class="form-group"><label for="loginEmail">Email</label><input type="email" id="loginEmail"
+                            class="form-control" required placeholder="you@email.com"></div>
+                    <div class="form-group"><label for="loginPass">Password</label><input type="password" id="loginPass"
+                            class="form-control" required placeholder="••••••••"></div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="showRegister">Create one</a></p>
+                <div class="demo-logins">
+                    <p class="demo-title">Quick Demo Access</p>
+                    <div class="demo-btns">
+                        <button class="btn btn-demo" data-role="member">👤 Member</button>
+                        <button class="btn btn-demo" data-role="trainer">🏋️ Trainer</button>
+                        <button class="btn btn-demo" data-role="admin">⚙️ Admin</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div class="auth-card" id="registerCard" style="display:none;">
+                <h2>Create Account</h2>
+                <p class="auth-sub">Join the future of fitness</p>
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group"><label for="regName">Full Name</label><input type="text" id="regName"
+                                class="form-control" required></div>
+                        <div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail"
+                                class="form-control" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="regPass">Password</label><input type="password" id="regPass"
+                                class="form-control" required minlength="4"></div>
+                        <div class="form-group"><label for="regRole">I am a</label><select id="regRole"
+                                class="form-control">
+                                <option value="member">Member</option>
+                                <option value="trainer">Trainer</option>
+                                <option value="admin">Admin</option>
+                            </select></div>
+                    </div>
+                    <div id="memberFields">
+                        <div class="form-row">
+                            <div class="form-group"><label for="regAge">Age</label><input type="number" id="regAge"
+                                    class="form-control" min="13" max="100"></div>
+                            <div class="form-group"><label for="regGender">Gender</label><select id="regGender"
+                                    class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="regHeight">Height (cm)</label><input type="number"
+                                    id="regHeight" class="form-control" min="100" max="250"></div>
+                            <div class="form-group"><label for="regWeight">Weight (kg)</label><input type="number"
+                                    id="regWeight" class="form-control" min="30" max="300" step="0.1"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="regGoal">Fitness Goal</label><select id="regGoal"
+                                    class="form-control">
+                                    <option value="lose_weight">Lose Weight</option>
+                                    <option value="build_muscle">Build Muscle</option>
+                                    <option value="endurance">Build Endurance</option>
+                                    <option value="general">General Fitness</option>
+                                </select></div>
+                            <div class="form-group"><label for="regLevel">Experience</label><select id="regLevel"
+                                    class="form-control">
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                </select></div>
+                        </div>
+                        <div class="form-group"><label for="regDays">Workout Days/Week</label><select id="regDays"
+                                class="form-control">
+                                <option value="3">3 Days</option>
+                                <option value="4">4 Days</option>
+                                <option value="5">5 Days</option>
+                                <option value="6">6 Days</option>
+                            </select></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
+            </div>
+
+            <!-- OTP VERIFICATION -->
+            <div class="auth-card" id="otpCard" style="display:none;">
+                <div class="otp-icon">📧</div>
+                <h2>Verify Your Email</h2>
+                <p class="auth-sub" id="otpEmailDisplay">Enter the 6-digit code sent to your email</p>
+                <form id="otpForm">
+                    <div class="form-group">
+                        <div class="otp-input-row">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="0" autocomplete="off">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="1" autocomplete="off">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="2" autocomplete="off">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="3" autocomplete="off">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="4" autocomplete="off">
+                            <input type="text" maxlength="1" class="otp-digit" data-idx="5" autocomplete="off">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Verify Code</button>
+                </form>
+                <p class="otp-timer" id="otpTimer">Code expires in <span id="otpCountdown">5:00</span></p>
+                <p class="auth-switch">Didn't receive code? <a href="#" id="resendOTP">Resend</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ APP SHELL ═══════════════ -->
+    <div id="appShell" class="app-shell" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon"><svg viewBox="0 0 40 40" fill="none">
+                            <rect x="4" y="16" width="32" height="8" rx="2" fill="currentColor" />
+                            <rect x="8" y="10" width="6" height="20" rx="2" fill="currentColor" />
+                            <rect x="26" y="10" width="6" height="20" rx="2" fill="currentColor" />
+                            <rect x="2" y="13" width="4" height="14" rx="2" fill="currentColor" opacity="0.6" />
+                            <rect x="34" y="13" width="4" height="14" rx="2" fill="currentColor" opacity="0.6" />
+                        </svg></div><span class="logo-text">Gym<span class="accent">Forge</span> <span
+                            class="pro-badge sm">PRO</span></span>
+                </div>
+            </div>
+
+            <!-- MEMBER NAV -->
+            <nav class="sidebar-nav role-nav member-nav" id="memberNav">
+                <a href="#" class="nav-item active" data-section="u-dashboard"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg><span>Dashboard</span></a>
+                <a href="#" class="nav-item" data-section="u-plan"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg><span>My Plan</span></a>
+                <a href="#" class="nav-item" data-section="u-nutrition"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                        <line x1="6" y1="1" x2="6" y2="4" />
+                        <line x1="10" y1="1" x2="10" y2="4" />
+                        <line x1="14" y1="1" x2="14" y2="4" />
+                    </svg><span>Nutrition</span></a>
+                <a href="#" class="nav-item" data-section="u-progress"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg><span>Progress</span></a>
+                <a href="#" class="nav-item" data-section="u-leaderboard"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                        <path d="M4 22h16" />
+                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22" />
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22" />
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                    </svg><span>Leaderboard</span></a>
+                <a href="#" class="nav-item" data-section="u-checkin"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <rect x="7" y="7" width="3" height="3" />
+                        <rect x="14" y="7" width="3" height="3" />
+                        <rect x="7" y="14" width="3" height="3" />
+                        <rect x="14" y="14" width="3" height="3" />
+                    </svg><span>QR Check-In</span></a>
+                <a href="#" class="nav-item" data-section="u-subscription"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" />
+                        <line x1="1" y1="10" x2="23" y2="10" />
+                    </svg><span>Subscription</span></a>
+                <a href="#" class="nav-item" data-section="u-assistant"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1.27a7 7 0 0 1-12.46 0H6a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z" />
+                    </svg><span>AI Assistant</span></a>
+                <a href="#" class="nav-item" data-section="u-health"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg><span>Health Data</span></a>
+                <a href="#" class="nav-item" data-section="u-challenges"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg><span>Challenges</span></a>
+                <a href="#" class="nav-item" data-section="u-history"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg><span>History</span></a>
+            </nav>
+
+            <!-- TRAINER NAV -->
+            <nav class="sidebar-nav role-nav trainer-nav" id="trainerNav" style="display:none;">
+                <a href="#" class="nav-item active" data-section="t-dashboard"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg><span>Dashboard</span></a>
+                <a href="#" class="nav-item" data-section="t-members"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg><span>Members</span></a>
+                <a href="#" class="nav-item" data-section="t-plans"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg><span>Modify Plans</span></a>
+                <a href="#" class="nav-item" data-section="t-feedback"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg><span>Feedback</span></a>
+            </nav>
+
+            <!-- ADMIN NAV -->
+            <nav class="sidebar-nav role-nav admin-nav" id="adminNav" style="display:none;">
+                <a href="#" class="nav-item active" data-section="a-dashboard"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg><span>Dashboard</span></a>
+                <a href="#" class="nav-item" data-section="a-revenue"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23" />
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg><span>Revenue</span></a>
+                <a href="#" class="nav-item" data-section="a-attendance"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                        <rect x="8" y="2" width="8" height="4" rx="1" />
+                        <path d="M9 14l2 2 4-4" />
+                    </svg><span>Attendance</span></a>
+                <a href="#" class="nav-item" data-section="a-members"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                    </svg><span>Members</span></a>
+                <a href="#" class="nav-item" data-section="a-risk"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg><span>Risk Detection</span></a>
+                <a href="#" class="nav-item" data-section="a-plans"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg><span>Plans & Pricing</span></a>
+                <a href="#" class="nav-item" data-section="a-churn"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <line x1="17" y1="11" x2="22" y2="11" />
+                    </svg><span>Churn Analysis</span></a>
+                <a href="#" class="nav-item" data-section="a-challenges"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg><span>Challenges</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="admin-badge" id="sidebarUser">
+                    <div class="admin-avatar" id="sidebarAvatar">A</div>
+                    <div class="admin-info"><span class="admin-name" id="sidebarName">Admin</span><span
+                            class="admin-role" id="sidebarRole">Manager</span></div>
+                </div>
+                <button class="btn-logout" id="logoutBtn" title="Sign Out">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header" id="mobileHeader">
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            <span class="mobile-logo">Gym<span class="accent">Forge</span> <span class="pro-badge sm">PRO</span></span>
+            <button class="notif-btn mobile-notif" id="mobileNotifBtn"><svg viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg><span class="notif-badge" id="mobileNotifBadge" style="display:none;">0</span></button>
+        </header>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Notification Panel -->
+        <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-header">
+                <h3>Notifications</h3><button class="btn btn-ghost btn-sm" id="clearNotifsBtn">Clear All</button>
+            </div>
+            <div class="notif-list" id="notifList">
+                <p class="empty-state sm">No notifications</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <div class="top-bar">
+                <div class="top-bar-left" id="topBarGreeting"></div>
+                <div class="top-bar-right">
+                    <button class="notif-btn" id="notifBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg><span class="notif-badge" id="notifBadge" style="display:none;">0</span></button>
+                </div>
+            </div>
+
+            <!-- ═══ USER SECTIONS ═══ -->
+            <section class="section active" id="section-u-dashboard"></section>
+            <section class="section" id="section-u-plan"></section>
+            <section class="section" id="section-u-nutrition"></section>
+            <section class="section" id="section-u-progress"></section>
+            <section class="section" id="section-u-leaderboard"></section>
+            <section class="section" id="section-u-checkin"></section>
+            <section class="section" id="section-u-subscription"></section>
+            <section class="section" id="section-u-assistant"></section>
+            <section class="section" id="section-u-health"></section>
+            <section class="section" id="section-u-challenges"></section>
+            <section class="section" id="section-u-history"></section>
+
+            <!-- ═══ TRAINER SECTIONS ═══ -->
+            <section class="section" id="section-t-dashboard"></section>
+            <section class="section" id="section-t-members"></section>
+            <section class="section" id="section-t-plans"></section>
+            <section class="section" id="section-t-feedback"></section>
+
+            <!-- ═══ ADMIN SECTIONS ═══ -->
+            <section class="section" id="section-a-dashboard"></section>
+            <section class="section" id="section-a-revenue"></section>
+            <section class="section" id="section-a-attendance"></section>
+            <section class="section" id="section-a-members"></section>
+            <section class="section" id="section-a-risk"></section>
+            <section class="section" id="section-a-plans"></section>
+            <section class="section" id="section-a-churn"></section>
+            <section class="section" id="section-a-challenges"></section>
+        </main>
+    </div>
+
+    <!-- ═══════════════ MODALS ═══════════════ -->
+    <!-- Meal Log Modal -->
+    <div class="modal-overlay" id="mealModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Log Meal</h2><button class="modal-close" data-close="mealModal">&times;</button>
+            </div>
+            <form id="mealForm">
+                <div class="form-group"><label for="mealName">Meal / Food</label><input type="text" id="mealName"
+                        class="form-control" required placeholder="e.g. Grilled Chicken"></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="mealCals">Calories</label><input type="number" id="mealCals"
+                            class="form-control" required min="0"></div>
+                    <div class="form-group"><label for="mealProtein">Protein (g)</label><input type="number"
+                            id="mealProtein" class="form-control" min="0" step="0.1"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="mealCarbs">Carbs (g)</label><input type="number" id="mealCarbs"
+                            class="form-control" min="0" step="0.1"></div>
+                    <div class="form-group"><label for="mealFats">Fats (g)</label><input type="number" id="mealFats"
+                            class="form-control" min="0" step="0.1"></div>
+                </div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost"
+                        data-close="mealModal">Cancel</button><button type="submit" class="btn btn-primary">Log
+                        Meal</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Progress Log Modal -->
+    <div class="modal-overlay" id="progressLogModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Log Progress</h2><button class="modal-close" data-close="progressLogModal">&times;</button>
+            </div>
+            <form id="progressLogForm">
+                <div class="form-row">
+                    <div class="form-group"><label for="pWeight">Weight (kg)</label><input type="number" id="pWeight"
+                            class="form-control" required step="0.1" min="30"></div>
+                    <div class="form-group"><label for="pBodyFat">Body Fat %</label><input type="number" id="pBodyFat"
+                            class="form-control" step="0.1" min="3" max="60"></div>
+                </div>
+                <div class="form-group"><label for="pNote">Notes</label><input type="text" id="pNote"
+                        class="form-control" placeholder="How are you feeling?"></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost"
+                        data-close="progressLogModal">Cancel</button><button type="submit"
+                        class="btn btn-primary">Save</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Trainer Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Send Feedback</h2><button class="modal-close" data-close="feedbackModal">&times;</button>
+            </div>
+            <form id="feedbackForm">
+                <input type="hidden" id="feedbackMemberId">
+                <div class="form-group"><label for="feedbackTo">To</label><input type="text" id="feedbackTo"
+                        class="form-control" readonly></div>
+                <div class="form-group"><label for="feedbackMsg">Message</label><textarea id="feedbackMsg"
+                        class="form-control" rows="4" required placeholder="Great progress this week!"></textarea></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost"
+                        data-close="feedbackModal">Cancel</button><button type="submit"
+                        class="btn btn-primary">Send</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Plan Modal -->
+    <div class="modal-overlay" id="adminPlanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="adminPlanTitle">Add Plan</h2><button class="modal-close"
+                    data-close="adminPlanModal">&times;</button>
+            </div>
+            <form id="adminPlanForm">
+                <input type="hidden" id="apId">
+                <div class="form-group"><label for="apName">Plan Name</label><input type="text" id="apName"
+                        class="form-control" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="apPrice">Price ($/month)</label><input type="number"
+                            id="apPrice" class="form-control" required min="0" step="0.01"></div>
+                    <div class="form-group"><label for="apDuration">Duration</label><select id="apDuration"
+                            class="form-control">
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="yearly">Yearly</option>
+                        </select></div>
+                </div>
+                <div class="form-group"><label for="apFeatures">Features (comma separated)</label><input type="text"
+                        id="apFeatures" class="form-control" placeholder="AI Plans, Nutrition, Priority Support"></div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost"
+                        data-close="adminPlanModal">Cancel</button><button type="submit" class="btn btn-primary">Save
+                        Plan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Challenge Creation Modal -->
+    <div class="modal-overlay" id="challengeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create Challenge</h2><button class="modal-close" data-close="challengeModal">&times;</button>
+            </div>
+            <form id="challengeForm" onsubmit="ChallengeSystem.createChallenge(event)">
+                <div class="form-group"><label for="chName">Challenge Name</label><input type="text" id="chName"
+                        class="form-control" required placeholder="e.g. Spring Steps Challenge"></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="chType">Type</label><select id="chType" class="form-control">
+                            <option value="steps">Steps</option>
+                            <option value="workouts">Workouts</option>
+                            <option value="calories">Calories</option>
+                            <option value="streak">Streak</option>
+                            <option value="xp">XP</option>
+                        </select></div>
+                    <div class="form-group"><label for="chGoal">Goal</label><input type="number" id="chGoal"
+                            class="form-control" required min="1" value="10000"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="chXP">XP Reward</label><input type="number" id="chXP"
+                            class="form-control" min="50" value="500"></div>
+                    <div class="form-group"><label for="chDays">Duration (days)</label><input type="number" id="chDays"
+                            class="form-control" min="1" value="30"></div>
+                </div>
+                <div class="modal-actions"><button type="button" class="btn btn-ghost"
+                        data-close="challengeModal">Cancel</button><button type="submit" class="btn btn-primary">Create
+                        Challenge</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Level Up Celebration -->
+    <div class="level-up-overlay" id="levelUpOverlay" style="display:none;">
+        <div class="level-up-card">
+            <div class="level-up-particles"></div>
+            <div class="level-up-icon">🏆</div>
+            <h2>LEVEL UP!</h2>
+            <p class="level-up-tier" id="levelUpTier"></p>
+            <p class="level-up-msg" id="levelUpMsg"></p>
+            <button class="btn btn-primary"
+                onclick="document.getElementById('levelUpOverlay').style.display='none'">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // ==================== PRODUCTION CONFIG ====================
+        // Set this to your Render backend URL when deploying to Vercel
+        // Example: 'https://gymforge-pro-api.onrender.com'
+        window.GYMFORGE_API_URL = (() => {
+            const hostname = window.location.hostname;
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return '/api'; // Local dev — same-origin
+            }
+            // Production: point to Render backend
+            // CHANGE THIS to your actual Render URL after deployment
+            return 'https://gymforge-pro-api.onrender.com/api';
+        })();
+    </script>
+    <script src="api-client.js"></script>
+    <script src="app.js"></script>
+    <script src="i18n.js"></script>
+    <script src="ai-engine.js"></script>
+    <script src="gamification.js"></script>
+    <script src="user.js"></script>
+    <script src="trainer.js"></script>
+    <script src="admin.js"></script>
+    <script src="churn.js"></script>
+    <script src="chat.js"></script>
+    <script src="health-sync.js"></script>
+    <script src="challenges.js"></script>
+    <script src="user-history.js"></script>
+</body>
+
+</html>
