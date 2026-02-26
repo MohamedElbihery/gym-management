@@ -148,51 +148,80 @@ const Auth = {
     },
     register(e) {
         e.preventDefault();
-        const users = Store.getA('users');
-        const email = document.getElementById('regEmail').value.trim().toLowerCase();
-        if (users.find(u => u.email === email)) { showToast('Email already registered', 'error'); return; }
         const role = document.getElementById('regRole').value;
-        const user = {
-            id: Store.genId('USR'),
+        const userData = {
             name: document.getElementById('regName').value.trim(),
-            email, password: document.getElementById('regPass').value,
-            role, createdAt: new Date().toISOString(),
-            xp: 0, level: 1, streak: 0, lastCheckIn: null,
+            email: document.getElementById('regEmail').value.trim().toLowerCase(),
+            password: document.getElementById('regPass').value,
+            role: role
         };
-        if (role === 'member') {
-            user.age = parseInt(document.getElementById('regAge').value) || 25;
-            user.gender = document.getElementById('regGender').value;
-            user.height = parseFloat(document.getElementById('regHeight').value) || 175;
-            user.weight = parseFloat(document.getElementById('regWeight').value) || 75;
-            user.goal = document.getElementById('regGoal').value;
-            user.experience = document.getElementById('regLevel').value;
-            user.daysPerWeek = parseInt(document.getElementById('regDays').value) || 4;
-            user.subscription = { plan: 'basic', status: 'active', startDate: todayStr(), expiresAt: (() => { const d = new Date(); d.setMonth(d.getMonth() + 1); return d.toISOString().split('T')[0]; })() };
-        }
-        users.push(user);
-        Store.set('users', users);
-        this.currentUser = user;
-        Store.set('session', user);
 
         if (role === 'member') {
-            // Generate AI plan on register
-            if (typeof AIEngine !== 'undefined') {
-                const plan = AIEngine.generateWorkoutPlan(user);
-                const plans = Store.getA('workout_plans');
-                plans.push({ userId: user.id, plan, generatedAt: new Date().toISOString() });
-                Store.set('workout_plans', plans);
-                const nutrition = AIEngine.calculateNutrition(user);
-                const nutritionData = Store.getA('nutrition_targets');
-                nutritionData.push({ userId: user.id, ...nutrition });
-                Store.set('nutrition_targets', nutritionData);
-            }
-            Notifs.push('Welcome to GymForge Pro! 🎉', 'Your AI workout plan has been generated. Check your plan tab!');
-            if (typeof Gamification !== 'undefined') Gamification.addXP(user.id, 100, 'Welcome bonus');
+            userData.age = parseInt(document.getElementById('regAge').value) || 25;
+            userData.gender = document.getElementById('regGender').value;
+            userData.height = parseFloat(document.getElementById('regHeight').value) || 175;
+            userData.weight = parseFloat(document.getElementById('regWeight').value) || 75;
+            userData.goal = document.getElementById('regGoal').value;
+            userData.level = document.getElementById('regLevel').value;
+            userData.workout_days = parseInt(document.getElementById('regDays').value) || 4;
         }
-        this.enterApp();
-        showToast(I18n.t('general.accountCreated', [user.name]));
+
+        // Use backend if available
+        ApiClient.checkBackend().then(available => {
+            if (available) {
+                ApiClient.register(userData)
+                    .then(res => {
+                        this.showOTP(userData.email);
+                        showToast(res.message);
+                    })
+                    .catch(err => {
+                        showToast(err.error || 'Registration failed', 'error');
+                    });
+            } else {
+                // Fallback to local storage
+                const users = Store.getA('users');
+                if (users.find(u => u.email === userData.email)) {
+                    showToast('Email already registered', 'error');
+                    return;
+                }
+                const user = {
+                    id: Store.genId('USR'),
+                    ...userData,
+                    createdAt: new Date().toISOString(),
+                    xp: 0, level: 1, streak: 0, lastCheckIn: null,
+                };
+                if (role === 'member') {
+                    user.subscription = { plan: 'basic', status: 'active', startDate: todayStr(), expiresAt: (() => { const d = new Date(); d.setMonth(d.getMonth() + 1); return d.toISOString().split('T')[0]; })() };
+                    // Generate AI plan
+                    if (typeof AIEngine !== 'undefined') {
+                        const plan = AIEngine.generateWorkoutPlan(user);
+                        const plans = Store.getA('workout_plans');
+                        plans.push({ userId: user.id, plan, generatedAt: new Date().toISOString() });
+                        Store.set('workout_plans', plans);
+                        const nutrition = AIEngine.calculateNutrition(user);
+                        const nutritionData = Store.getA('nutrition_targets');
+                        nutritionData.push({ userId: user.id, ...nutrition });
+                        Store.set('nutrition_targets', nutritionData);
+                    }
+                    Notifs.push('Welcome to GymForge Pro! 🎉', 'Your AI workout plan has been generated.');
+                    if (typeof Gamification !== 'undefined') Gamification.addXP(user.id, 100, 'Welcome bonus');
+                }
+                users.push(user);
+                Store.set('users', users);
+                this.currentUser = user;
+                Store.set('session', user);
+                this.enterApp();
+                showToast(I18n.t('general.accountCreated', [user.name]));
+            }
+        });
     },
     demoLogin(role) {
+        const pass = prompt(I18n.currentLang === 'ar' ? 'أدخل كلمة مرور المسؤول:' : 'Enter Admin Password:');
+        if (pass !== 'Albery#@#') {
+            showToast(I18n.currentLang === 'ar' ? 'كلمة المرور غير صحيحة' : 'Incorrect password', 'error');
+            return;
+        }
+
         DemoData.seed();
         const users = Store.getA('users');
         const user = users.find(u => u.role === role);

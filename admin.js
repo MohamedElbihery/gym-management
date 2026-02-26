@@ -156,19 +156,48 @@ const AdminModule = {
 
     // ==================== MEMBERS ====================
     renderMembers() {
-        const members = Auth.getMembers();
         const s = document.getElementById('section-a-members');
         s.innerHTML = `
             <div class="section-header"><h1>${I18n.t('admin.allMembers')}</h1><p class="section-subtitle">${I18n.t('admin.manageGym')}</p></div>
-            <div class="card table-card">
-                <div class="table-responsive">
-                    <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th></tr></thead>
-                    <tbody>${members.map(m => {
+            <div class="card table-card" id="adminMembersTable">
+                <p class="empty-state sm">Loading members...</p>
+            </div>
+        `;
+
+        ApiClient.checkBackend().then(available => {
+            if (available) {
+                ApiClient.getAdminUsers({ role: 'member' })
+                    .then(res => {
+                        this.renderMembersList(res.users);
+                    })
+                    .catch(err => {
+                        showToast('Failed to load members from server', 'error');
+                        this.renderMembersList(Auth.getMembers());
+                    });
+            } else {
+                this.renderMembersList(Auth.getMembers());
+            }
+        });
+    },
+
+    renderMembersList(members) {
+        const container = document.getElementById('adminMembersTable');
+        if (!container) return;
+
+        if (members.length === 0) {
+            container.innerHTML = `<p class="empty-state sm">${I18n.t('general.noMembers') || 'No members found'}</p>`;
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th></tr></thead>
+                <tbody>${members.map(m => {
             const tier = Gamification.getTier(m.xp || 0);
             const status = m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date() ? 'expired' : m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000) ? 'expiring' : 'active';
-            return `<tr><td><strong>${m.name}</strong></td><td>${m.email}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + (m.subscription?.plan || '')) || m.subscription?.plan || '—'}</td><td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td><td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td><td>🔥 ${m.streak || 0}</td><td>${formatDate(m.createdAt)}</td></tr>`;
+            const plan = m.subscription?.plan || m.plan || '—';
+            return `<tr><td><strong>${m.name}</strong></td><td>${m.email}</td><td style="text-transform:capitalize;">${I18n.t('admin.' + plan.toLowerCase()) || plan}</td><td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td><td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td><td>🔥 ${m.streak || 0}</td><td>${formatDate(m.createdAt || m.created_at)}</td></tr>`;
         }).join('')}</tbody></table>
-                </div>
             </div>
         `;
     },
