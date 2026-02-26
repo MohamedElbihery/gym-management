@@ -215,32 +215,6 @@ const Auth = {
             }
         });
     },
-    demoLogin(role) {
-        document.getElementById('demoRoleInput').value = role;
-        document.getElementById('demoPassInput').value = '';
-        openModal('demoPassModal');
-        document.getElementById('demoPassInput').focus();
-    },
-    handleDemoSubmit(e) {
-        e.preventDefault();
-        const role = document.getElementById('demoRoleInput').value;
-        const pass = document.getElementById('demoPassInput').value;
-        const ADMIN_PASS = 'Albery#@#';
-
-        if (role !== 'admin' || pass !== ADMIN_PASS) {
-            showToast(I18n.currentLang === 'ar' ? 'كلمة المرور غير صحيحة' : 'Incorrect password', 'error');
-            return;
-        }
-
-        closeModal('demoPassModal');
-        DemoData.seed();
-        const user = Store.getA('users').find(u => u.role === 'admin');
-        if (!user) { showToast('Demo data error', 'error'); return; }
-        this.currentUser = user;
-        Store.set('session', user);
-        this.enterApp();
-        showToast(I18n.t('general.demoLogin', ['Admin']));
-    },
     logout() {
         Store.remove('session');
         this.currentUser = null;
@@ -417,12 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Router.init();
     Notifs.init();
     Auth.init();
-
-    // Demo Pass Form
-    const demoPassForm = document.getElementById('demoPassForm');
-    if (demoPassForm) {
-        demoPassForm.addEventListener('submit', e => Auth.handleDemoSubmit(e));
-    }
 
     // OTP digit auto-advance
     document.querySelectorAll('.otp-digit').forEach((input, idx, inputs) => {
