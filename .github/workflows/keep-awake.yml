@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Ping Render API
         run: |
-          curl -s https://gymforge-pro-api.onrender.com/api/health
+          curl -s https://gym-management.onrender.com/api/health
           echo "Pinged Render API successfully"

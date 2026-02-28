@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "https://gymforge-pro-api.onrender.com/api/$1"
+            "destination": "https://gym-management.onrender.com/api/$1"
         },
         {
             "source": "/(.*)",
