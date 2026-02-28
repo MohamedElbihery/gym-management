@@ -653,24 +653,28 @@
         // Set this to your Render backend URL when deploying to Vercel
         // Example: 'https://gymforge-pro-api.onrender.com'
         window.GYMFORGE_API_URL = (() => {
-            const hostname = window.location.hostname;
-            const port = window.location.port;
-            const protocol = window.location.protocol;
+            const h = window.location.hostname;
+            const p = window.location.port;
+            const prot = window.location.protocol;
 
-            // Local dev: localhost, 127.0.0.1, or opening as a file
-            if (hostname === 'localhost' || hostname === '127.0.0.1' || protocol === 'file:') {
-                // If we are already on port 5001 (backend), use relative
-                if (port === '5001') return '/api';
+            // Comprehensive local check: localhost, 127.0.0.1, [::1], empty (file://), .local, and private IPs
+            const isLocal = h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h === '' ||
+                h.endsWith('.local') || !h.includes('.') ||
+                h.startsWith('192.168.') || h.startsWith('10.') || h.startsWith('172.');
+
+            if (isLocal || prot === 'file:') {
+                // If we are already on the backend port, use relative
+                if (p === '5001') return '/api';
                 // Otherwise hit the local backend directly
                 return 'http://localhost:5001/api';
             }
 
-            // Production: Always use relative '/api' and let Vercel handle the proxy
-            // This avoids CORS issues and makes the code cleaner
+            // Production fallback
             return '/api';
         })();
     </script>
     <script src="api-client.js"></script>
+    <script>if (typeof ApiClient !== 'undefined' && ApiClient.init) ApiClient.init();</script>
     <script src="app.js"></script>
     <script src="i18n.js"></script>
     <script src="ai-engine.js"></script>

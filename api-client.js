@@ -9,6 +9,14 @@ const ApiClient = {
     _accessToken: null,
     _refreshToken: null,
 
+    // Diagnostic logging
+    init() {
+        console.log(`📡 GymForge PRO API Client initialized. BASE_URL: ${this.baseURL}`);
+        if (this.baseURL === '/api' && typeof window !== 'undefined' && window.location.protocol === 'file:') {
+            console.warn('⚠️ WARNING: You are running the frontend from a local file (file://) but the API is set to a relative path (/api). This will fail. Please use http://localhost:5001 to access the app.');
+        }
+    },
+
     get accessToken() {
         if (!this._accessToken) this._accessToken = localStorage.getItem('gfp_access_token');
         return this._accessToken;
