@@ -37,6 +37,11 @@ app.get('/api/health', (req, res) => {
 });
 
 // ==================== CATCH-ALL FOR SPA (dev only) ====================
+// ==================== HEALTH CHECK ====================
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
+
 if (!isProduction) {
     app.get('*', (req, res) => {
         if (!req.path.startsWith('/api')) {
