@@ -151,7 +151,18 @@ const Auth = {
             showToast(I18n.t('general.welcomeUser', [data.user.name]));
         } catch (err) {
             console.error('Login error:', err);
-            // Fallback for demo if no backend (optional, but let's prioritize backend now)
+
+            // Handle specific error codes
+            if (err.code === 'NOT_VERIFIED') {
+                showToast('Please verify your email first. Check your inbox for the OTP code.', 'error');
+                return;
+            }
+            if (err.code === 'PENDING_APPROVAL') {
+                showToast('Your account is pending admin approval. Please wait for the admin to approve your registration.', 'error');
+                return;
+            }
+
+            // Fallback for demo if no backend
             const users = Store.getA('users');
             const user = users.find(u => u.email === email && u.password === pass);
             if (user) {
@@ -462,6 +473,17 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await ApiClient.verifyOTP(pendingEmail, digits);
                 Store.remove('pending_otp_email');
+
+                // Check if user needs admin approval (admin/trainer)
+                if (data.user && !data.user.is_approved && (data.user.role === 'admin' || data.user.role === 'trainer')) {
+                    showToast('Email verified! Your account is pending admin approval.', 'info');
+                    // Go back to login screen
+                    document.getElementById('otpCard').style.display = 'none';
+                    document.getElementById('loginCard').style.display = 'block';
+                    ApiClient.clearTokens();
+                    return;
+                }
+
                 Auth.currentUser = data.user;
                 Store.set('session', data.user);
                 Auth.enterApp();

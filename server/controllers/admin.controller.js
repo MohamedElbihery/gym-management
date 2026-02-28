@@ -150,6 +150,20 @@ module.exports = {
             const action = approve !== false ? 'approved' : 'rejected';
             await logger.log(req.user.id, `${action.charAt(0).toUpperCase() + action.slice(1)} user ${id}`, 'admin', { targetId: id }, req);
 
+            // Send notification email to the user
+            try {
+                const userResult = await query('SELECT email, name FROM users WHERE id = $1', [id]);
+                if (userResult.rows.length > 0) {
+                    const { email, name } = userResult.rows[0];
+                    const emailService = require('../services/email.service');
+                    if (approve !== false) {
+                        await emailService.sendWelcome(email, name);
+                    }
+                }
+            } catch (emailErr) {
+                console.error('Failed to send approval email:', emailErr.message);
+            }
+
             res.json({ message: `User ${action} successfully` });
         } catch (err) {
             res.status(500).json({ error: 'Failed to update approval status' });

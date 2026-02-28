@@ -151,6 +151,7 @@ const ApiClient = {
     async createAdminUser(data) { return this.request('/admin/users', { method: 'POST', body: data }); },
     async updateUserRole(userId, role) { return this.request(`/admin/users/${userId}/role`, { method: 'PUT', body: { role } }); },
     async deleteUser(userId) { return this.request(`/admin/users/${userId}`, { method: 'DELETE' }); },
+    async approveUser(userId, approve) { return this.request(`/admin/users/${userId}/approve`, { method: 'PUT', body: { approve } }); },
 
     // Logout
     logout() {

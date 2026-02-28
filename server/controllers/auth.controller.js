@@ -42,12 +42,28 @@ module.exports = {
             const otp = await otpService.create(email);
             await emailService.sendOTP(email, otp);
 
+            // Notify Super Admin if admin/trainer registration
+            if (roleName === 'admin' || roleName === 'trainer') {
+                const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+                if (superAdminEmail) {
+                    try {
+                        await emailService.sendAdminNotification(superAdminEmail, name, email, roleName);
+                        console.log(`📧 Admin notified about new ${roleName} registration: ${email}`);
+                    } catch (notifErr) {
+                        console.error('Failed to notify admin:', notifErr.message);
+                    }
+                }
+            }
+
             await logger.log(user.id, 'User registered', 'auth', { email }, req);
 
             res.status(201).json({
-                message: 'Registration successful. Please verify your email with the OTP sent.',
+                message: roleName === 'admin' || roleName === 'trainer'
+                    ? 'Registration successful. Please verify your email. Your account will be activated after admin approval.'
+                    : 'Registration successful. Please verify your email with the OTP sent.',
                 userId: user.id,
                 email: user.email,
+                requiresApproval: roleName === 'admin' || roleName === 'trainer',
             });
         } catch (err) {
             console.error('Register error:', err.message);

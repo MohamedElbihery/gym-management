@@ -167,7 +167,7 @@ const AdminModule = {
 
         ApiClient.checkBackend().then(available => {
             if (available) {
-                ApiClient.getAdminUsers({ role: 'member' })
+                ApiClient.getAdminUsers({})
                     .then(res => {
                         this.renderMembersList(res.users);
                     })
@@ -176,7 +176,7 @@ const AdminModule = {
                         this.renderMembersList(Auth.getMembers());
                     });
             } else {
-                this.renderMembersList(Auth.getMembers());
+                this.renderMembersList(Store.getA('users'));
             }
         });
     },
@@ -190,28 +190,55 @@ const AdminModule = {
             return;
         }
 
+        const currentUserId = Auth.currentUser?.id;
+
         container.innerHTML = `
             <div class="table-responsive">
-                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.plan')}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th><th>${I18n.t('admin.actions') || 'Actions'}</th></tr></thead>
+                <table class="data-table"><thead><tr><th>${I18n.t('admin.name')}</th><th>${I18n.t('admin.email')}</th><th>${I18n.t('admin.role') || 'Role'}</th><th>${I18n.t('admin.status')}</th><th>${I18n.t('admin.xp')}</th><th>${I18n.t('admin.streak')}</th><th>${I18n.t('admin.joined')}</th><th>${I18n.t('admin.actions') || 'Actions'}</th></tr></thead>
                 <tbody>${members.map(m => {
             const tier = Gamification.getTier(m.xp || 0);
-            const status = m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date() ? 'expired' : m.subscription?.expiresAt && new Date(m.subscription.expiresAt) < new Date(Date.now() + 7 * 86400000) ? 'expiring' : 'active';
-            const plan = m.subscription?.plan || m.plan || '—';
+            const isActive = m.is_active !== undefined ? m.is_active : true;
+            const status = isActive ? 'active' : 'expired';
+            const role = m.role || m.role_name || 'member';
+            const isSelf = m.id === currentUserId;
             return `<tr>
-                <td><strong>${m.name}</strong></td>
+                <td><strong>${m.name}</strong> ${isSelf ? '<span style="color:var(--orange);font-size:0.7rem;">(you)</span>' : ''}</td>
                 <td>${m.email}</td>
-                <td style="text-transform:capitalize;">${I18n.t('admin.' + plan.toLowerCase()) || plan}</td>
-                <td><span class="badge badge-${status}">${I18n.t('admin.' + status)}</span></td>
+                <td><span class="badge badge-${role === 'super_admin' ? 'active' : role === 'admin' ? 'expiring' : role === 'trainer' ? 'active' : 'active'}" style="text-transform:capitalize;">${I18n.t('auth.' + role) || role}</span></td>
+                <td><span class="badge badge-${status}">${isActive ? '✅ ' + (I18n.t('admin.active') || 'Active') : '⏳ ' + (I18n.t('admin.inactive') || 'Inactive')}</span></td>
                 <td><span class="level-badge level-${tier.css}" style="font-size:0.65rem;padding:1px 6px;">${tier.emoji} ${m.xp || 0}</span></td>
                 <td>🔥 ${m.streak || 0}</td>
                 <td>${formatDate(m.createdAt || m.created_at)}</td>
                 <td>
-                    ${m.role !== 'admin' ? `<button class="btn btn-ghost btn-xs" onclick="AdminModule.promoteMember('${m.id}')" title="${I18n.t('auth.makeAdmin')}">👑</button>` : ''}
+                    <div style="display:flex;gap:4px;">
+                        ${role !== 'admin' && role !== 'super_admin' && !isSelf ? `<button class="btn btn-ghost btn-xs" onclick="AdminModule.promoteMember('${m.id}')" title="${I18n.t('auth.makeAdmin') || 'Make Admin'}">👑</button>` : ''}
+                        ${!isSelf && role !== 'super_admin' ? `<button class="btn btn-ghost btn-xs" style="color:var(--red);" onclick="AdminModule.deleteUser('${m.id}', '${m.name.replace(/'/g, "\\'")}')">🗑️</button>` : ''}
+                    </div>
                 </td>
             </tr>`;
         }).join('')}</tbody></table>
             </div>
         `;
+    },
+
+    async deleteUser(id, name) {
+        if (!confirm(`${I18n.t('admin.deleteConfirm') || 'Are you sure?'}\n\nDelete user: ${name}?`)) return;
+
+        try {
+            const available = await ApiClient.checkBackend();
+            if (available) {
+                await ApiClient.deleteUser(id);
+                showToast(`User "${name}" deleted successfully`);
+            } else {
+                // Fallback: delete from local storage
+                const users = Store.getA('users').filter(u => u.id !== id);
+                Store.set('users', users);
+                showToast(`User "${name}" deleted`);
+            }
+            this.renderMembers();
+        } catch (err) {
+            showToast(err.error || 'Failed to delete user', 'error');
+        }
     },
 
     // ==================== REQUESTS ====================

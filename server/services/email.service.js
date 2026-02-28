@@ -83,5 +83,40 @@ module.exports = {
             subject: 'GymForge Pro — Special Offer Just For You! 💪',
             text: `Hey ${name}, we miss you! ${offer}`,
         });
+    },
+
+    async sendAdminNotification(adminEmail, userName, userEmail, role) {
+        const html = `
+        <!DOCTYPE html>
+        <html>
+        <body style="margin:0;padding:0;font-family:'Segoe UI',Tahoma,sans-serif;background:#0a0a0f;">
+            <div style="max-width:480px;margin:40px auto;background:#12121a;border:1px solid #2a2a33;border-radius:16px;overflow:hidden;">
+                <div style="background:linear-gradient(135deg,#f97316,#ea580c);padding:32px;text-align:center;">
+                    <h1 style="color:#fff;margin:0;font-size:24px;">GymForge Pro</h1>
+                    <p style="color:rgba(255,255,255,0.9);margin:8px 0 0;font-size:14px;">New Registration Request</p>
+                </div>
+                <div style="padding:36px 32px;text-align:center;">
+                    <p style="color:#a1a1aa;margin:0 0 16px;font-size:15px;">A new <strong style="color:#f97316;text-transform:capitalize;">${role}</strong> has registered and needs your approval:</p>
+                    <div style="background:#1a1a22;border:1px solid #2a2a33;border-radius:12px;padding:20px;margin:0 auto;text-align:left;">
+                        <p style="color:#e4e4e7;margin:0 0 8px;font-size:14px;"><strong>Name:</strong> ${userName}</p>
+                        <p style="color:#e4e4e7;margin:0 0 8px;font-size:14px;"><strong>Email:</strong> ${userEmail}</p>
+                        <p style="color:#e4e4e7;margin:0;font-size:14px;"><strong>Role:</strong> <span style="text-transform:capitalize;">${role}</span></p>
+                    </div>
+                    <p style="color:#64647a;margin:24px 0 0;font-size:13px;">Please log in to review and approve or reject this request.</p>
+                </div>
+                <div style="border-top:1px solid #2a2a33;padding:16px;text-align:center;">
+                    <p style="color:#64647a;margin:0;font-size:12px;">© 2026 GymForge Pro — AI-Powered Fitness</p>
+                </div>
+            </div>
+        </body>
+        </html>`;
+
+        return transporter.sendMail({
+            from: `"GymForge Pro" <${process.env.EMAIL_FROM || 'noreply@gymforge.pro'}>`,
+            to: adminEmail,
+            subject: `GymForge Pro — New ${role.charAt(0).toUpperCase() + role.slice(1)} Registration Pending Approval`,
+            text: `A new ${role} has registered: ${userName} (${userEmail}). Please log in to approve or reject.`,
+            html,
+        });
     }
 };
