@@ -20,15 +20,17 @@ const corsMiddleware = cors({
         // Allow requests with no origin (mobile apps, curl, Render health checks)
         if (!origin) return callback(null, true);
 
-        // Development: allow all origins
-        if (process.env.NODE_ENV !== 'production') {
-            return callback(null, true);
+        // In production, check against allowedOrigins or common hosting providers (Vercel)
+        if (process.env.NODE_ENV === 'production') {
+            const isVercel = origin.endsWith('.vercel.app');
+            if (isVercel || allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+            return callback(new Error(`CORS: origin ${origin} not allowed`));
         }
 
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        return callback(new Error(`CORS: origin ${origin} not allowed`));
+        // Default: allow all in dev
+        return callback(null, true);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
